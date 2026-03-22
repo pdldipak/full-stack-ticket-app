@@ -1,0 +1,3 @@
+# Avoid CRLF in shell scripts and Makefiles (fixes bash errors under WSL on /mnt/c)
+*.sh text eol=lf
+Makefile text eol=lf

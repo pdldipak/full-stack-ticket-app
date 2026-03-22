@@ -1,0 +1,10 @@
+export const authFormCardClass =
+  'rounded-2xl border border-slate-200/90 bg-white/90 backdrop-blur-xl p-8 shadow-xl shadow-slate-900/10 ring-1 ring-slate-200/70 space-y-5 dark:border-slate-600/70 dark:bg-slate-950/90 dark:shadow-2xl dark:shadow-black/60 dark:ring-white/10';
+
+export default function AuthFormCard({ children, onSubmit, className = '' }) {
+  return (
+    <form onSubmit={onSubmit} className={`${authFormCardClass} ${className}`.trim()}>
+      {children}
+    </form>
+  );
+}

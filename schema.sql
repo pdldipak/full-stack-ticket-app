@@ -1,0 +1,34 @@
+-- Event ticketing system — MySQL schema
+-- Run: mysql -u root -p < schema.sql
+
+CREATE DATABASE IF NOT EXISTS event_tickets
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE event_tickets;
+
+CREATE TABLE IF NOT EXISTS tickets (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  ticket_code VARCHAR(32) NULL,
+  full_name VARCHAR(255) NOT NULL,
+  phone VARCHAR(32) NULL DEFAULT NULL,
+  phone_contact_consent TINYINT(1) NOT NULL DEFAULT 0,
+  ticket_count INT UNSIGNED NOT NULL DEFAULT 1,
+  count_adults INT UNSIGNED NOT NULL DEFAULT 0,
+  count_student INT UNSIGNED NOT NULL DEFAULT 0,
+  count_child INT UNSIGNED NOT NULL DEFAULT 0,
+  ticket_type VARCHAR(255) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL COMMENT 'amount in SEK (app convention)',
+  sold_by VARCHAR(100) NOT NULL,
+  city VARCHAR(64) NOT NULL DEFAULT 'Stockholm',
+  checked_in TINYINT(1) NOT NULL DEFAULT 0,
+  paid TINYINT(1) NOT NULL DEFAULT 0,
+  paid_to ENUM('seller', 'nrna_ncc') NULL DEFAULT NULL,
+  submission_source ENUM('seller', 'public') NOT NULL DEFAULT 'seller',
+  verified_at DATETIME NULL DEFAULT NULL,
+  verified_by VARCHAR(100) NULL DEFAULT NULL,
+  qr_image_base64 MEDIUMTEXT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_ticket_code (ticket_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
