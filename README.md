@@ -1,5 +1,235 @@
 # Event ticketing system
 
+Full-stack ticketing for NRNA NCC Sweden.
+
+## Event text (single file)
+
+Edit `frontend/src/config/eventConfig.js`.
+
+## Ticket codes (TKT-...)
+
+Legacy default: `TKT-{id}` (e.g. `TKT-0001`).
+
+New format (optional): `TKT-{slug}-{id}` (e.g. `TKT-NY-2083-0001`).
+
+Enable new format by setting `TICKET_CODE_EVENT_SLUG` in the API environment:
+- local dev: `backend/.env`
+- Docker/Compose: root `.env` (the file used by `docker-compose.yml`)
+
+Keep the same slug in `frontend/src/config/eventConfig.js` for scanner placeholder text.
+
+Existing tickets keep their original `ticket_code` unless you run a rewrite migration.
+
+## Sellers (public order page)
+
+The order page loads sellers from `GET /public/sellers`.
+
+Sellers are configured via `backend/.env`:
+- `SELLER_USERNAMES` (comma-separated)
+- `SELLER_PASSWORDS` (comma-separated; same count and order)
+
+## Quick start
+
+### Docker (recommended: full stack)
+
+```bash
+cp docker-compose.env.example .env
+docker compose up --build
+```
+
+Open `http://localhost` (or `http://localhost:WEB_PORT` if you changed `WEB_PORT`).
+
+### Local dev (MySQL in Docker, apps with npm)
+
+1) Start only MySQL:
+```bash
+docker compose up db
+```
+
+2) Configure backend:
+```bash
+cd backend
+cp .env.example .env
+```
+
+Set in `backend/.env`:
+- `DB_HOST=127.0.0.1`
+- `DB_PORT=3306`
+- `DB_USER/DB_PASSWORD/DB_NAME` (match your root `.env` / docker-compose.env.example)
+- `SELLER_USERNAMES` / `SELLER_PASSWORDS`
+- `SCANNER_USERNAMES` / `SCANNER_PASSWORDS`
+
+3) Run:
+```bash
+cd backend && npm install && npm run dev
+cd ../frontend && npm install && npm run dev
+```
+
+Open `http://localhost:5173`.
+
+## Legacy DB migration (optional)
+
+Older DBs created before newer columns existed may need:
+
+```bash
+sed 's/\r$//' migrations/001_tickets_legacy_upgrade.sql \
+  | docker compose exec -T db sh -c 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"'
+```
+
+# Event ticketing system
+
+Full-stack ticketing for NRNA NCC Sweden.
+
+## Edit event text
+
+Edit `frontend/src/config/eventConfig.js`.
+
+## Quick start (Docker)
+
+```bash
+cp docker-compose.env.example .env
+docker compose up --build
+```
+
+Open `http://localhost` (or `http://localhost:WEB_PORT` if you changed `WEB_PORT`).
+
+## Quick start (Local dev)
+
+1) Start only MySQL:
+```bash
+docker compose up db
+```
+
+2) Configure backend:
+```bash
+cd backend
+cp .env.example .env
+```
+
+Set in `backend/.env`:
+- `DB_HOST=127.0.0.1`
+- `DB_PORT=3306`
+- `DB_USER/DB_PASSWORD/DB_NAME` (match your root `.env`)
+- `SELLER_USERNAMES` / `SELLER_PASSWORDS` (public order page)
+- `SCANNER_USERNAMES` / `SCANNER_PASSWORDS` (scanner login)
+
+3) Run:
+```bash
+cd backend && npm install && npm run dev
+cd ../frontend && npm install && npm run dev
+```
+
+Open `http://localhost:5173`.
+
+## Ticket codes (TKT-...)
+
+Legacy default: `TKT-{id}` e.g. `TKT-0001`.
+
+New format (optional): `TKT-{slug}-{id}` e.g. `TKT-NY-2083-0001`.
+
+To enable new format set `TICKET_CODE_EVENT_SLUG` in the API environment:
+- local dev: `backend/.env`
+- Docker/Compose: project root `.env`
+
+Keep the same slug in `frontend/src/config/eventConfig.js` for scanner placeholder text.
+
+## Sellers (public order page)
+
+The order page loads sellers from `GET /public/sellers`.
+
+Sellers are configured via `backend/.env` using:
+- `SELLER_USERNAMES` (comma-separated)
+- `SELLER_PASSWORDS` (comma-separated; same count/order)
+
+## Legacy DB migration (optional)
+
+From repo root:
+```bash
+sed 's/\r$//' migrations/001_tickets_legacy_upgrade.sql | docker compose exec -T db sh -c 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"'
+```
+
+# Event ticketing system
+
+Full-stack ticketing for NRNA NCC Sweden.
+
+## Event text (single file)
+
+Edit `frontend/src/config/eventConfig.js` (organizer/title, schedule/venues, and the order-page intro).
+
+## Quick start
+
+### Docker (recommended: full stack)
+
+```bash
+cp docker-compose.env.example .env
+docker compose up --build
+```
+
+Open `http://localhost` (or `http://localhost:WEB_PORT` if you changed `WEB_PORT`).
+
+### Local dev (MySQL in Docker, apps with npm)
+
+1) Start only MySQL:
+
+```bash
+docker compose up db
+```
+
+2) Configure backend:
+
+```bash
+cd backend
+cp .env.example .env
+```
+
+In `backend/.env` set:
+- `DB_HOST=127.0.0.1`
+- `DB_PORT=3306`
+- `DB_USER/DB_PASSWORD/DB_NAME` to match your root `.env`
+- `SELLER_USERNAMES` and `SELLER_PASSWORDS` (required for the public order page)
+- `SCANNER_USERNAMES` and `SCANNER_PASSWORDS` (required for scanner logins)
+
+3) Run backend + frontend:
+
+```bash
+cd backend && npm install && npm run dev
+cd ../frontend && npm install && npm run dev
+```
+
+Open `http://localhost:5173`.
+
+## Sellers (public order page)
+
+The order page loads sellers from `GET /public/sellers`.
+
+Sellers are configured via `backend/.env`:
+- `SELLER_USERNAMES` (comma-separated)
+- `SELLER_PASSWORDS` (comma-separated; same count/order)
+
+## Ticket codes (TKT-...)
+
+Legacy default: `TKT-{id}` e.g. `TKT-0001`, `TKT-0002`, ...
+
+Configured new format: `TKT-{slug}-{id}` e.g. `TKT-NY-2083-0001`.
+
+Enable by setting `TICKET_CODE_EVENT_SLUG`:
+- local dev: `backend/.env`
+- Docker/Compose: root `.env` (same file used by `docker-compose.yml`)
+
+Keep the same value in `frontend/src/config/eventConfig.js` (for the scanner placeholder text).
+
+Existing tickets keep their original `ticket_code` unless you run a rewrite migration.
+
+## Legacy DB migration (optional)
+
+Older DBs created before newer columns existed may need:
+
+```bash
+sed 's/\r$//' migrations/001_tickets_legacy_upgrade.sql | docker compose exec -T db sh -c 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"'
+```
+
+# Event ticketing system
+
 Full-stack ticketing for **NRNA NCC Sweden**.
 
 ## Event text (single file)
@@ -159,11 +389,11 @@ sed 's/\r$//' migrations/001_tickets_legacy_upgrade.sql | docker compose exec -T
 - **Node.js** 18+ (only for local dev without Docker)
 - **MySQL** 8.x (or compatible), **unless** you use Docker (MySQL is included in Compose)
 
-### I donâ€™t have MySQL on my computer
+### I don't have MySQL on my computer
 
 You do **not** need to install MySQL locally if you use **Docker**. The database runs inside a container; your PC only needs [Docker Desktop](https://docs.docker.com/desktop/) (Windows / Mac) or Docker Engine + Compose on Linux.
 
-**Option A â€” Everything in Docker (simplest)**  
+**Option A - Everything in Docker (simplest)**  
 You only install Docker. Then from the project root:
 
 ```bash
@@ -173,7 +403,7 @@ docker compose up --build
 
 Open **http://localhost** and sign in. MySQL, the API, and the web app all run in Docker; nothing is installed on the host except Docker.
 
-**Option B â€” MySQL in Docker, app with `npm` (for local development)**  
+**Option B - MySQL in Docker, app with `npm` (for local development)**  
 Start **only** the database container, then run the backend and frontend on your machine:
 
 ```bash
@@ -184,19 +414,19 @@ Wait until MySQL is healthy. In `backend/.env` (copy from `backend/.env.example`
 
 - `DB_HOST=127.0.0.1` or `localhost`
 - `DB_PORT=3306` (or the same value as `MYSQL_PORT` in `.env` if you changed it)
-- `DB_USER`, `DB_PASSWORD`, `DB_NAME` â€” match `docker-compose.env.example` / your root `.env` (`tickets`, `ticketspass`, `event_tickets` by default)
-- `SELLER_USERNAMES`, `SELLER_PASSWORDS`, `SCANNER_USERNAMES`, `SCANNER_PASSWORDS` â€” see **Sellers** / **Door staff** below (required for logins; replace placeholders in `.env.example`)
+- `DB_USER`, `DB_PASSWORD`, `DB_NAME` - match `docker-compose.env.example` / your root `.env` (`tickets`, `ticketspass`, `event_tickets` by default)
+- `SELLER_USERNAMES`, `SELLER_PASSWORDS`, `SCANNER_USERNAMES`, `SCANNER_PASSWORDS` - see **Sellers** / **Door staff** below (required for logins; replace placeholders in `.env.example`)
 
 Run the API (`cd backend && npm install && npm run dev`) and the UI (`cd frontend && npm install && npm run dev`). Use **http://localhost:5173**; the Vite dev server proxies API calls to port 3001.
 
-If you **cannot** use Docker, you would need either a cloud MySQL instance (connection string in `backend/.env`) or a local install such as [XAMPP](https://www.apachefriends.org/) / MariaDB â€” Docker is usually easier on Windows.
+If you **cannot** use Docker, you would need either a cloud MySQL instance (connection string in `backend/.env`) or a local install such as [XAMPP](https://www.apachefriends.org/) / MariaDB - Docker is usually easier on Windows.
 
 ### WSL (Windows)
 
-Use **WSL2** and run all commands from your Linux distroâ€™s terminal (Ubuntu, etc.).
+Use **WSL2** and run all commands from your Linux distro's terminal (Ubuntu, etc.).
 
 1. **Docker**  
-   Install [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/) and turn on **Settings â†’ Resources â†’ WSL integration** for your distro. Then `docker` and `docker compose` work inside WSL without installing Docker Engine separately.
+   Install [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/) and turn on **Settings -> Resources -> WSL integration** for your distro. Then `docker` and `docker compose` work inside WSL without installing Docker Engine separately.
 
 2. **Project path**  
    Your repo can live under `/mnt/c/Users/...` (slower I/O) or under your WSL home, e.g. `~/code/nrna-ncc-ticket` (often faster). From WSL:
@@ -287,8 +517,8 @@ Health check: `GET http://localhost:3001/health`
 
 Configure accounts only in **`backend/.env`** (or Docker env for the API):
 
-- **`SELLER_USERNAMES`** â€” comma-separated usernames (e.g. `seller1,seller2,seller3,seller4`).
-- **`SELLER_PASSWORDS`** â€” comma-separated passwords, **same count and order** as usernames.
+- **`SELLER_USERNAMES`** - comma-separated usernames (e.g. `seller1,seller2,seller3,seller4`).
+- **`SELLER_PASSWORDS`** - comma-separated passwords, **same count and order** as usernames.
 
 There are **no default passwords in code**. Each username must exist as a key in `backend/src/config/sellerCities.js` (`SELLER_ALLOWED_CITIES`) or city checks will not match. Do not put commas inside passwords (use strong passwords without commas). Do not commit `.env`.
 
@@ -313,8 +543,8 @@ If either env variable is missing or empty, admin login is **disabled**. In **pr
 
 Accounts are **only** from the environment:
 
-- **`SCANNER_USERNAMES`** â€” comma-separated usernames.
-- **`SCANNER_PASSWORDS`** â€” comma-separated passwords, **same count and order**.
+- **`SCANNER_USERNAMES`** - comma-separated usernames.
+- **`SCANNER_PASSWORDS`** - comma-separated passwords, **same count and order**.
 
 Sign in at **`/scanner-login`**. Scanners may call **`POST /tickets/checkin`** (and session) only. No hardcoded scanner passwords in code.
 
@@ -336,9 +566,9 @@ npm install
 npm run dev
 ```
 
-**Hot reload (Vite HMR)** only runs when you use `npm run dev` in `frontend`. **`docker compose up`** builds the app once and **nginx** serves the static `dist` folder â€” there is **no** dev server, so saving files will not live-reload the browser until you rebuild the `web` image. For fast UI work, run the Vite dev server on your machine (API can stay in Docker: `docker compose up db api`).
+**Hot reload (Vite HMR)** only runs when you use `npm run dev` in `frontend`. **`docker compose up`** builds the app once and **nginx** serves the static `dist` folder - there is **no** dev server, so saving files will not live-reload the browser until you rebuild the `web` image. For fast UI work, run the Vite dev server on your machine (API can stay in Docker: `docker compose up db api`).
 
-Open **http://localhost:5173**. **Sellers** use **Sign in** â€” create tickets, browse the list, open detail for the QR image. **Door staff** use **Door staff scanner sign-in** (`/scanner-login`) â€” **Scanner** only, for check-in.
+Open **http://localhost:5173**. **Sellers** use **Sign in** - create tickets, browse the list, open detail for the QR image. **Door staff** use **Door staff scanner sign-in** (`/scanner-login`) - **Scanner** only, for check-in.
 
 For **production** builds:
 
@@ -349,8 +579,8 @@ For **production** builds:
 
 ### Keeping passwords and env out of the repo
 
-- **Never commit** real `.env` files. The repo ignores `.env` in the root and in subfolders (see `.gitignore`). Only `*.env.example` files belong in git, with **placeholders** â€” not real passwords.
-- **On the server**, inject secrets through your host or platform: Docker `--env-file` / Compose env (not checked in), systemd `Environment=`, Kubernetes secrets, or your PaaS â€œEnvironment variablesâ€ UI. Same keys as in `backend/.env.example`.
+- **Never commit** real `.env` files. The repo ignores `.env` in the root and in subfolders (see `.gitignore`). Only `*.env.example` files belong in git, with **placeholders** - not real passwords.
+- **On the server**, inject secrets through your host or platform: Docker `--env-file` / Compose env (not checked in), systemd `Environment=`, Kubernetes secrets, or your PaaS "Environment variables" UI. Same keys as in `backend/.env.example`.
 - **Backend** stores all sensitive values: `DB_*`, `JWT_SECRET`, `SELLER_USERNAMES` / `SELLER_PASSWORDS`, `SCANNER_USERNAMES` / `SCANNER_PASSWORDS`, optional `ADMIN_USERNAME` / `ADMIN_PASSWORD`, `CORS_ORIGIN`, `TRUST_PROXY`. These exist only in the API process environment.
 - **Frontend** (`VITE_*`, e.g. `VITE_API_URL`): values are **baked into the built JavaScript** and are **public**. Use them only for non-secret configuration (such as the public API URL). **Never** put database passwords, JWT secrets, or login passwords in `VITE_*` or in any file under `frontend/src`.
 - If a secret was ever committed, **rotate** it (new DB password, new `JWT_SECRET`, new seller/scanner passwords) and avoid re-adding those files to git.
@@ -365,11 +595,11 @@ For **production** builds:
    - `cd backend && npm install && npm start` (not `dev`).
 
 3. **Run the frontend**
-   - `cd frontend && npm install && npm run build` â€” output in `frontend/dist/`. Serve with nginx (see `frontend/nginx.conf` and Docker) or any static host.
+- `cd frontend && npm install && npm run build` - output in `frontend/dist/`. Serve with nginx (see `frontend/nginx.conf` and Docker) or any static host.
 
 4. **Health checks**
-   - `GET /health` â€” process up.
-   - `GET /health/ready` â€” process up and database reachable (returns `503` if DB is down).
+- `GET /health` - process up.
+- `GET /health/ready` - process up and database reachable (returns `503` if DB is down).
 
 5. **Security features included**
    - `helmet` HTTP headers, global rate limiting, stricter rate limit on `POST /auth/login`, strict CORS in production, graceful shutdown (closes the DB pool on `SIGTERM`/`SIGINT`), no error `details` in JSON responses when `NODE_ENV=production`.
@@ -378,9 +608,9 @@ For **production** builds:
 
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
-| POST | `/auth/login` | No | Body: `{ "username", "password" }` â†’ `{ token, username, role, allowedCities }` â€” `role` is `seller`, `admin`, or `scanner` (rate limited) |
-| GET | `/auth/me` | Bearer JWT | `{ username, role, allowedCities }` â€” refresh session after reload |
-| POST | `/tickets` | Bearer JWT (**seller** or **admin**) | Create ticket; body: `fullName`, `countAdults`, `countStudent`, `countChild` (nonâ€‘negative integers; total attendance 1â€“99; legacy `ticketCount` alone still works), `ticketType`, `price`, `city`, optional `paid`, `paidTo`; **admin** optional `soldBy` |
+| POST | `/auth/login` | No | Body: `{ "username", "password" }` -> `{ token, username, role, allowedCities }` - `role` is `seller`, `admin`, or `scanner` (rate limited) |
+| GET | `/auth/me` | Bearer JWT | `{ username, role, allowedCities }` - refresh session after reload |
+| POST | `/tickets` | Bearer JWT (**seller** or **admin**) | Create ticket; body: `fullName`, `countAdults`, `countStudent`, `countChild` (non-negative integers; total attendance 1-99; legacy `ticketCount` alone still works), `ticketType`, `price`, `city`, optional `paid`, `paidTo`; **admin** optional `soldBy` |
 | GET | `/tickets` | Bearer JWT (**seller** or **admin**) | Query: `search`, `city`, `checkedIn`, `paid`, `paidTo`, `submissionSource`. **Sellers** default to their own rows (`sold_by` = JWT user); `scope=all` (also `everyone`, `all_sellers`) returns all rows like admin. **Admins** see all rows; optional `soldBy` filters to one seller. |
 | GET | `/tickets/:code` | Bearer JWT (**seller** or **admin**) | Ticket detail (e.g. `TKT-NY-2083-0001` or legacy `TKT-0001`) |
 | PUT | `/tickets/:code` | Bearer JWT (**seller** or **admin**) | Update ticket (same body as create, including `paid` / `paidTo`); **seller**: only own, not checked-in; **admin**: any ticket; **admin** may set `soldBy` |
@@ -397,7 +627,7 @@ That script (`001_tickets_legacy_upgrade.sql`) applies **all** incremental `tick
 
 **Run the migration** from the **project root** (the folder that contains `docker-compose.yml`). Credentials come from the `db` container (your root `.env`).
 
-**Most reliable (works even if files have Windows CRLF):** copy-paste this â€” it strips carriage returns from the SQL, then pipes it into `mysql` (no script file needed):
+**Most reliable (works even if files have Windows CRLF):** copy-paste this - it strips carriage returns from the SQL, then pipes it into `mysql` (no script file needed):
 
 ```bash
 sed 's/\r$//' migrations/001_tickets_legacy_upgrade.sql | docker compose exec -T db sh -c 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"'
@@ -405,21 +635,21 @@ sed 's/\r$//' migrations/001_tickets_legacy_upgrade.sql | docker compose exec -T
 
 **Alternatives:**
 
-- `bash scripts/run-tickets-migration.sh` â€” same pipe logic; exits non-zero if `mysql` fails; if you see errors about `\r`, your editor saved the script with CRLF. Fix once: `sed -i 's/\r$//' scripts/run-tickets-migration.sh`, or in Cursor set the file to **LF** (status bar) and save.
-- `make migrate` â€” if `make` is installed (Makefile uses tabs + LF).
+- `bash scripts/run-tickets-migration.sh` - same pipe logic; exits non-zero if `mysql` fails; if you see errors about `\r`, your editor saved the script with CRLF. Fix once: `sed -i 's/\r$//' scripts/run-tickets-migration.sh`, or in Cursor set the file to **LF** (status bar) and save.
+- `make migrate` - if `make` is installed (Makefile uses tabs + LF).
 
-**About `mysql: [Warning] Using a password on the command line interface can be insecure`:** MySQL prints this when the client gets a password via `-pâ€¦`. It is not an SSL error. For local development it is usually fine.
+**About `mysql: [Warning] Using a password on the command line interface can be insecure`:** MySQL prints this when the client gets a password via `-p...`. It is not an SSL error. For local development it is usually fine.
 
-**Fully interactive** (no `-p` on the command line): `docker compose exec db mysql -u root -p` â€” enter the password at the prompt, then run SQL or `SOURCE` a file inside the container.
+**Fully interactive** (no `-p` on the command line): `docker compose exec db mysql -u root -p` - enter the password at the prompt, then run SQL or `SOURCE` a file inside the container.
 
 **Cookies:** The API does not set session cookies. The seller/admin UI stores the JWT in **`localStorage`** (and theme preference may also use `localStorage`). The public order page uses a dedicated Axios client with **`withCredentials: false`** so the browser does not send cookies on those requests. Third-party scripts or hosting could still set cookies; configure nginx or your CDN if you need stricter control.
 
 ## Project layout
 
-- `schema.sql` â€” database and `tickets` table (full definition for new installs)
-- `migrations/001_tickets_legacy_upgrade.sql` â€” single combined upgrade for older `tickets` tables (legacy columns, phone consent, attendance breakdown; safe to re-run)
-- `backend/` â€” Express app (MVC: `routes`, `controllers`, `models`, `services`, `middleware`)
-- `frontend/` â€” Vite + React + Tailwind + Axios + `html5-qrcode` scanner
+- `schema.sql` - database and `tickets` table (full definition for new installs)
+- `migrations/001_tickets_legacy_upgrade.sql` - single combined upgrade for older `tickets` tables (legacy columns, phone consent, attendance breakdown; safe to re-run)
+- `backend/` - Express app (MVC: `routes`, `controllers`, `models`, `services`, `middleware`)
+- `frontend/` - Vite + React + Tailwind + Axios + `html5-qrcode` scanner
 
 ## Security notes (production)
 
