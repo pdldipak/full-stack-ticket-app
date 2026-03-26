@@ -1,3 +1,4 @@
+import { buildTicketCodeForId } from '../config/ticketCode.js';
 import { getPool } from '../config/database.js';
 
 function mapTicketRow(row) {
@@ -102,7 +103,7 @@ export async function createTicketRow({
     );
 
     const id = result.insertId;
-    const ticketCode = `TKT-${String(id).padStart(4, '0')}`;
+    const ticketCode = buildTicketCodeForId(id);
 
     await conn.query(
       `UPDATE tickets SET ticket_code = ? WHERE id = ?`,

@@ -14,6 +14,12 @@ export const SITE_PRODUCT_NAME = 'Tickets';
 export const EVENT_TITLE = 'New Year Eve 2083 BS';
 export const EVENT_ARTIST = 'Melina Rai';
 
+/**
+ * Middle segment of ticket codes (must match backend TICKET_CODE_EVENT_SLUG in .env).
+ * Display-only example: TKT-{TICKET_CODE_EVENT_SLUG}-0001
+ */
+export const TICKET_CODE_EVENT_SLUG = 'NY-2083';
+
 /** Line between organizer and title on the hero (e.g. “present”, “presents”, “welcomes”). */
 export const EVENT_PRESENT_LABEL = 'present';
 
@@ -59,6 +65,11 @@ export function getDocumentTitle() {
 
 export function getSiteHeaderTitle() {
   return `${SITE_PRODUCT_NAME} · ${EVENT_ORGANIZER}`;
+}
+
+/** Example ticket code for scanner manual entry (sync with server TICKET_CODE_EVENT_SLUG). */
+export function getTicketCodeExample() {
+  return `TKT-${TICKET_CODE_EVENT_SLUG}-0001`;
 }
 
 export function getEventDateForCity(city) {

@@ -169,7 +169,7 @@ export default function Scanner() {
           <input
             value={manualCode}
             onChange={(e) => setManualCode(e.target.value)}
-            placeholder="TKT-0001"
+            placeholder={getTicketCodeExample()}
             className="flex-1 rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 font-mono focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-900 dark:border-slate-700 dark:text-white"
           />
           <button

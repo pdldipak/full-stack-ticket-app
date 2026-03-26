@@ -46,6 +46,7 @@ services:
       SCANNER_PASSWORDS: "${SCANNER_PASSWORDS:?Set SCANNER_PASSWORDS in root .env}"
       ADMIN_USERNAME: ${ADMIN_USERNAME:-}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      TICKET_CODE_EVENT_SLUG: "${TICKET_CODE_EVENT_SLUG:-}"
     depends_on:
       db:
         condition: service_healthy

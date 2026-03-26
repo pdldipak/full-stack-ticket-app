@@ -140,6 +140,8 @@ Configure accounts only in **`backend/.env`** (or Docker env for the API):
 
 There are **no default passwords in code**. Each username must exist as a key in `backend/src/config/sellerCities.js` (`SELLER_ALLOWED_CITIES`) or city checks will not match. Do not put commas inside passwords (use strong passwords without commas). Do not commit `.env`.
 
+The entrypoint imports `src/loadEnv.js` **first**, so `backend/.env` is loaded before `sellers.js` runs; otherwise the public order page would show **no sellers** even with a correct `.env` file.
+
 For normal sellers, edit and delete are allowed **only** for tickets **you created** (`sold by` = your username), and **not** after check-in. A configured **admin** may **edit or delete any ticket** (including after check-in), use **any program city**, and **attribute sales** to a seller account. The API enforces city access per seller (`sellerCities.js`) for non-admin users and when crediting a ticket to a named seller.
 
 Login and `GET /auth/me` return **`allowedCities`** for the UI dropdown. For admins, responses also include **`sellerUsernames`** (configured seller logins) for the create/edit UI.
@@ -228,14 +230,14 @@ For **production** builds:
 | GET | `/auth/me` | Bearer JWT | `{ username, role, allowedCities }` — refresh session after reload |
 | POST | `/tickets` | Bearer JWT (**seller** or **admin**) | Create ticket; body: `fullName`, `countAdults`, `countStudent`, `countChild` (non‑negative integers; total attendance 1–99; legacy `ticketCount` alone still works), `ticketType`, `price`, `city`, optional `paid`, `paidTo`; **admin** optional `soldBy` |
 | GET | `/tickets` | Bearer JWT (**seller** or **admin**) | Query: `search`, `city`, `checkedIn`, `paid`, `paidTo`, `submissionSource`. **Sellers** default to their own rows (`sold_by` = JWT user); `scope=all` (also `everyone`, `all_sellers`) returns all rows like admin. **Admins** see all rows; optional `soldBy` filters to one seller. |
-| GET | `/tickets/:code` | Bearer JWT (**seller** or **admin**) | Ticket detail (e.g. `TKT-0001`) |
+| GET | `/tickets/:code` | Bearer JWT (**seller** or **admin**) | Ticket detail (e.g. `TKT-NY-2083-0001` or legacy `TKT-0001`) |
 | PUT | `/tickets/:code` | Bearer JWT (**seller** or **admin**) | Update ticket (same body as create, including `paid` / `paidTo`); **seller**: only own, not checked-in; **admin**: any ticket; **admin** may set `soldBy` |
 | DELETE | `/tickets/:code` | Bearer JWT (**seller** or **admin**) | Delete ticket; **seller**: only own, not checked-in; **admin**: any ticket |
 | POST | `/tickets/checkin` | Bearer JWT (**scanner** role only) | Body: `{ "ticketCode" }`. Response includes `ticket`: `ticketCode`, `fullName`, `ticketCount`, `price` (SEK), `paid`, `checkedIn` for the scanner UI |
 | GET | `/health` | No | Liveness |
 | GET | `/health/ready` | No | Readiness (DB ping) |
 
-Ticket codes are generated as `TKT-` plus a zero-padded numeric suffix from the row `id`. QR codes encode that ticket code as PNG **base64 data URLs** stored in `qr_image_base64`. The UI treats **price** as **Swedish kronor (SEK)**; the database stores a numeric amount only. Each ticket has a **`city`** (program location: Stockholm or Gothenburg). **Payment** fields: **`paid`** (yes/no) and **`paid_to`** (money to the **seller** vs **NRNA NCC account**).
+Ticket codes are `TKT-` plus a zero-padded numeric suffix from the row `id`. If **`TICKET_CODE_EVENT_SLUG`** is set in the API environment (e.g. `NY-2083`), codes are `TKT-{slug}-{id}` (e.g. `TKT-NY-2083-0001`). The API loads **`backend/.env`** by file path (not only when the shell is in `backend/`), so `TICKET_CODE_EVENT_SLUG` is picked up even when you start the server from the repo root. **Docker:** the `api` image does not bundle `.env`; set **`TICKET_CODE_EVENT_SLUG`** in the **project root** `.env` used by Compose (same as `MYSQL_*`). Keep the same value in **`frontend/src/config/eventConfig.js`** (`TICKET_CODE_EVENT_SLUG`) for scanner placeholder text. Omit the env var for legacy `TKT-0001`-only codes. QR codes encode that ticket code as PNG **base64 data URLs** stored in `qr_image_base64`. The UI treats **price** as **Swedish kronor (SEK)**; the database stores a numeric amount only. Each ticket has a **`city`** (program location: Stockholm or Gothenburg). **Payment** fields: **`paid`** (yes/no) and **`paid_to`** (money to the **seller** vs **NRNA NCC account**).
 
 **Existing databases** that were created before newer columns existed should run the combined script once.
 

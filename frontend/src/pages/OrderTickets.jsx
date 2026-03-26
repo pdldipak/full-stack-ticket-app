@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import publicApi from '../api/publicClient.js';
 import AttendanceFields from '../components/AttendanceFields.jsx';
 import CitySelect from '../components/CitySelect.jsx';
@@ -26,6 +26,7 @@ import { getApiErrorMessage } from '../utils/apiError.js';
 
 export default function OrderTickets() {
   const [sellers, setSellers] = useState([]);
+  const [sellersRequestDone, setSellersRequestDone] = useState(false);
   const [loadSellersError, setLoadSellersError] = useState('');
 
   const [fullName, setFullName] = useState('');
@@ -35,8 +36,8 @@ export default function OrderTickets() {
   const [countChild, setCountChild] = useState(0);
   const [city, setCity] = useState('Stockholm');
   const [soldBy, setSoldBy] = useState('');
-  /** '' until user chooses — all fields required, including payment. */
-  const [paymentChoice, setPaymentChoice] = useState('');
+  /** 'unpaid' | 'paid' — default so payment section is valid without an extra click. */
+  const [paymentChoice, setPaymentChoice] = useState('unpaid');
   const [paidTo, setPaidTo] = useState(PAID_TO_SELLER);
   const [phoneContactConsent, setPhoneContactConsent] = useState(false);
 
@@ -44,24 +45,38 @@ export default function OrderTickets() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(null);
 
+  /** Bumps each effect run so Strict Mode / remounts do not leave "loading" stuck. */
+  const sellersFetchGen = useRef(0);
+
   useEffect(() => {
-    let cancelled = false;
+    const gen = ++sellersFetchGen.current;
+    const ac = new AbortController();
+
+    setLoadSellersError('');
+    setSellersRequestDone(false);
+
     (async () => {
-      setLoadSellersError('');
       try {
-        const { data } = await publicApi.get('/public/sellers');
-        if (cancelled) return;
+        const { data } = await publicApi.get('/public/sellers', { signal: ac.signal });
+        if (gen !== sellersFetchGen.current) return;
         const list = data.sellers || [];
         setSellers(list);
         setSoldBy((prev) => prev || (list[0]?.username ?? ''));
       } catch (err) {
-        if (!cancelled) {
-          setLoadSellersError(getApiErrorMessage(err, 'Could not load sellers'));
+        if (ac.signal.aborted || err.code === 'ERR_CANCELED' || err.name === 'CanceledError') {
+          return;
+        }
+        if (gen !== sellersFetchGen.current) return;
+        setLoadSellersError(getApiErrorMessage(err, 'Could not load sellers'));
+      } finally {
+        if (gen === sellersFetchGen.current) {
+          setSellersRequestDone(true);
         }
       }
     })();
+
     return () => {
-      cancelled = true;
+      ac.abort();
     };
   }, []);
 
@@ -111,7 +126,7 @@ export default function OrderTickets() {
       setCountAdults(1);
       setCountStudent(0);
       setCountChild(0);
-      setPaymentChoice('');
+      setPaymentChoice('unpaid');
       setPaidTo(PAID_TO_SELLER);
       setPhoneContactConsent(false);
     } catch (err) {
@@ -264,11 +279,18 @@ export default function OrderTickets() {
             required
             value={soldBy}
             onChange={(e) => setSoldBy(e.target.value)}
-            disabled={sellers.length === 0}
+            disabled={!sellersRequestDone}
+            aria-busy={!sellersRequestDone}
             className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white disabled:opacity-60"
           >
-            {sellers.length === 0 ? (
+            {!sellersRequestDone ? (
               <option value="">Loading sellers…</option>
+            ) : loadSellersError ? (
+              <option value="">Could not load sellers — check API is running (port 3001)</option>
+            ) : sellers.length === 0 ? (
+              <option value="">
+                No sellers — set SELLER_USERNAMES and SELLER_PASSWORDS in backend/.env and restart the API
+              </option>
             ) : (
               sellers.map((s) => (
                 <option key={s.username} value={s.username}>
@@ -334,7 +356,14 @@ export default function OrderTickets() {
           )}
         </fieldset>
 
-        <PrimaryGradientButton disabled={submitting || sellers.length === 0}>
+        <PrimaryGradientButton
+          disabled={
+            submitting ||
+            !sellersRequestDone ||
+            sellers.length === 0 ||
+            !String(soldBy).trim()
+          }
+        >
           {submitting ? 'Sending…' : 'Submit order'}
         </PrimaryGradientButton>
       </AuthFormCard>
