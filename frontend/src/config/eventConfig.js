@@ -15,7 +15,7 @@ export const EVENT_TITLE = 'New Year Eve 2083 BS';
 export const EVENT_ARTIST = 'Melina Rai';
 
 /**
- * Middle segment of ticket codes (must match backend TICKET_CODE_EVENT_SLUG in .env).
+ * Middle segment of ticket codes — must match backend `ticketEventConfig.js` default / TICKET_CODE_EVENT_SLUG.
  * Display-only example: TKT-{TICKET_CODE_EVENT_SLUG}-0001
  */
 export const TICKET_CODE_EVENT_SLUG = 'NY-2083';

@@ -9,13 +9,9 @@ import ticketRoutes from './routes/ticketRoutes.js';
 import { getCorsOptions } from './config/corsOptions.js';
 import { getPool, closePool } from './config/database.js';
 import { validateEnv } from './config/validateEnv.js';
+import { getTicketCodeFormatLogLine } from './config/ticketCode.js';
 
-if (process.env.NODE_ENV !== 'production') {
-  const slug = process.env.TICKET_CODE_EVENT_SLUG;
-  console.log(
-    `[config] TICKET_CODE_EVENT_SLUG: ${slug ? JSON.stringify(slug.trim()) : 'not set (legacy TKT-0001 style)'}`
-  );
-}
+console.log(`[config] ticket codes: ${getTicketCodeFormatLogLine()}`);
 
 validateEnv();
 

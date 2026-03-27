@@ -3,10 +3,16 @@
  * Each value is an array — list one city or several, e.g. ['Stockholm', 'Gothenburg'].
  */
 export const SELLER_ALLOWED_CITIES = {
-  seller1: ['Stockholm', 'Gothenburg'],
-  seller2: ['Stockholm', 'Gothenburg'],
-  seller3: ['Stockholm', 'Gothenburg'],
-  seller4: ['Stockholm', 'Gothenburg'],
+  seller1: ['Stockholm'],
+  seller2: ['Stockholm'],
+  seller3: ['Stockholm'],
+  seller4: ['Stockholm'],
+  seller5: ['Gothenburg'],
+  seller6: ['Gothenburg'],
+  seller7: ['Gothenburg'],
+  seller8: ['Gothenburg'],
+  seller9: ['Stockholm', 'Gothenburg'],
+  seller10: ['Stockholm', 'Gothenburg'],
   
 };
 

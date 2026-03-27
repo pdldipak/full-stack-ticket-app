@@ -1,9 +1,157 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Html5Qrcode } from 'html5-qrcode';
 import api from '../api/client.js';
 import { formatSek } from '../utils/formatCurrency.js';
+import { getTicketCodeExample } from '../config/eventConfig.js';
 
 const SCANNER_ID = 'scanner-viewport';
+
+/**
+ * Full-width result card for scan outcomes (matches door-check dark “modal” style).
+ */
+function ScannerResultPanel({ message, onDismiss, closeButtonRef }) {
+  const { type, text, detail } = message;
+
+  const shell =
+    type === 'success'
+      ? 'border-2 border-emerald-500/90 bg-gradient-to-b from-emerald-950/90 to-neutral-950 shadow-xl shadow-emerald-950/40'
+      : type === 'warning'
+        ? 'border-2 border-amber-500/90 bg-gradient-to-b from-amber-950/80 to-neutral-950 shadow-xl shadow-amber-950/30'
+        : detail
+          ? 'border-2 border-red-500/90 bg-gradient-to-b from-red-950/85 to-[#120809] shadow-xl shadow-red-950/50'
+          : 'border border-red-300/80 bg-red-50 text-red-950 dark:border-red-700 dark:bg-red-950/40 dark:text-red-100';
+
+  if (!detail) {
+    return (
+      <div className={`rounded-xl px-4 py-3 text-sm ${shell}`}>
+        <p className="font-medium">{text}</p>
+        <button
+          ref={closeButtonRef}
+          type="button"
+          onClick={onDismiss}
+          className="mt-3 rounded-lg border border-red-800/30 bg-red-900/10 px-3 py-1.5 text-xs font-medium text-red-900 hover:bg-red-900/20 dark:border-white/20 dark:bg-white/10 dark:text-red-100 dark:hover:bg-white/15"
+        >
+          Dismiss
+        </button>
+      </div>
+    );
+  }
+
+  const dtClass = 'text-slate-400 text-sm';
+  const ddClass = 'text-sm font-medium text-white text-right tabular-nums';
+
+  return (
+    <div className={`rounded-xl p-5 text-sm text-white ${shell}`}>
+      <p id="scanner-result-title" className="text-[15px] font-semibold leading-snug text-white">
+        {text}
+      </p>
+      <div className="my-4 border-t border-slate-500/40" />
+      <p className="mb-4 font-mono text-xs tracking-wide text-slate-400">{detail.ticketCode}</p>
+      <dl className="space-y-2.5">
+        <div className="flex justify-between gap-6">
+          <dt className={dtClass}>Name</dt>
+          <dd className={`${ddClass} max-w-[60%]`}>{detail.fullName || '—'}</dd>
+        </div>
+        <div className="flex justify-between gap-6">
+          <dt className={dtClass}>Adults</dt>
+          <dd className={ddClass}>{detail.countAdults ?? 0}</dd>
+        </div>
+        <div className="flex justify-between gap-6">
+          <dt className={dtClass}>Student</dt>
+          <dd className={ddClass}>{detail.countStudent ?? 0}</dd>
+        </div>
+        <div className="flex justify-between gap-6">
+          <dt className={dtClass}>Child</dt>
+          <dd className={ddClass}>{detail.countChild ?? 0}</dd>
+        </div>
+        <div className="flex justify-between gap-6">
+          <dt className={dtClass}>Total attendance</dt>
+          <dd className={ddClass}>{detail.ticketCount != null ? detail.ticketCount : '—'}</dd>
+        </div>
+        <div className="flex justify-between gap-6">
+          <dt className={dtClass}>Marked paid</dt>
+          <dd
+            className={`text-right text-sm font-semibold tabular-nums ${
+              detail.paid ? 'text-emerald-400' : 'text-amber-400'
+            }`}
+          >
+            {detail.paid ? 'Yes' : 'No'}
+          </dd>
+        </div>
+        <div className="flex justify-between gap-6">
+          <dt className={dtClass}>Amount (SEK)</dt>
+          <dd className={ddClass}>{formatSek(detail.price)}</dd>
+        </div>
+      </dl>
+      <div className="mt-5 flex justify-end">
+        <button
+          ref={closeButtonRef}
+          type="button"
+          onClick={onDismiss}
+          className={`rounded-lg px-8 py-2.5 text-sm font-semibold transition ${
+            type === 'success'
+              ? 'bg-emerald-600 text-white hover:bg-emerald-500'
+              : type === 'warning'
+                ? 'bg-amber-600 text-white hover:bg-amber-500'
+                : 'bg-red-700 text-white hover:bg-red-600'
+          }`}
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Centered modal over a dimmed backdrop (portal → document.body so it always stacks above the layout).
+ */
+function ScannerResultModal({ message, onDismiss }) {
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const onKey = (e) => {
+      if (e.key === 'Escape') onDismiss();
+    };
+    document.addEventListener('keydown', onKey);
+
+    const t = window.setTimeout(() => closeRef.current?.focus(), 0);
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener('keydown', onKey);
+      window.clearTimeout(t);
+    };
+  }, [onDismiss]);
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
+      role="presentation"
+    >
+      <button
+        type="button"
+        className="absolute inset-0 bg-black/65 backdrop-blur-[2px] dark:bg-black/70"
+        aria-label="Close dialog"
+        onClick={onDismiss}
+      />
+      <div
+        className="relative z-[201] w-full max-w-lg max-h-[min(90vh,640px)] overflow-y-auto shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="scanner-result-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <ScannerResultPanel message={message} onDismiss={onDismiss} closeButtonRef={closeRef} />
+      </div>
+    </div>,
+    document.body
+  );
+}
 
 function normalizeScannedText(text) {
   const trimmed = String(text || '').trim();
@@ -81,7 +229,9 @@ export default function Scanner() {
       } else if (data.status === 'not_paid') {
         setMessage({
           type: 'error',
-          text: data.message || 'Ticket is not marked as paid — entry not allowed.',
+          text:
+            data.message ||
+            'Payment is not complete — entry not allowed until the ticket is marked paid with a valid amount.',
           detail: data.ticket,
         });
       } else if (data.status === 'success') {
@@ -121,6 +271,8 @@ export default function Scanner() {
     const code = normalizeScannedText(manualCode);
     if (code) verifyCode(code);
   };
+
+  const dismissMessage = () => setMessage(null);
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
@@ -186,52 +338,7 @@ export default function Scanner() {
         <p className="text-slate-600 dark:text-slate-400 text-sm">Verifying…</p>
       )}
 
-      {message && (
-        <div
-          className={`rounded-lg border px-4 py-3 text-sm ${
-            message.type === 'success'
-              ? 'bg-emerald-50 border-emerald-200 text-emerald-900 dark:bg-emerald-950/50 dark:border-emerald-700 dark:text-emerald-100'
-              : message.type === 'warning'
-                ? 'bg-amber-50 border-amber-200 text-amber-900 dark:bg-amber-950/50 dark:border-amber-700 dark:text-amber-100'
-                : 'bg-red-50 border-red-200 text-red-900 dark:bg-red-950/50 dark:border-red-800 dark:text-red-100'
-          }`}
-        >
-          <p className="font-medium">{message.text}</p>
-          {message.detail && (
-            <div className="mt-3 space-y-2 text-left border-t border-current/20 pt-3 text-sm">
-              <p className="font-mono text-xs opacity-80">{message.detail.ticketCode}</p>
-              <dl className="space-y-1.5">
-                <div className="flex justify-between gap-4">
-                  <dt className="opacity-80">Name</dt>
-                  <dd className="font-medium text-right">{message.detail.fullName || '—'}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="opacity-80">Adults</dt>
-                  <dd className="font-medium text-right tabular-nums">{message.detail.countAdults ?? 0}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="opacity-80">Student</dt>
-                  <dd className="font-medium text-right tabular-nums">{message.detail.countStudent ?? 0}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="opacity-80">Child</dt>
-                  <dd className="font-medium text-right tabular-nums">{message.detail.countChild ?? 0}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="opacity-80">Total attendance</dt>
-                  <dd className="font-medium text-right tabular-nums">
-                    {message.detail.ticketCount != null ? message.detail.ticketCount : '—'}
-                  </dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="opacity-80">Amount (paid)</dt>
-                  <dd className="font-medium text-right tabular-nums">{formatSek(message.detail.price)}</dd>
-                </div>
-              </dl>
-            </div>
-          )}
-        </div>
-      )}
+      {message && <ScannerResultModal message={message} onDismiss={dismissMessage} />}
     </div>
   );
 }

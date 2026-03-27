@@ -446,6 +446,16 @@ export async function checkIn(req, res) {
     });
   }
 
+  const priceNum = ticket.price != null ? Number(ticket.price) : NaN;
+  if (Number.isNaN(priceNum) || priceNum <= 0) {
+    return res.status(200).json({
+      status: 'not_paid',
+      message:
+        'This ticket has no valid amount (0 kr or missing). Set the correct price and payment in the portal before entry.',
+      ticket: ticketCheckInSnapshot(ticket),
+    });
+  }
+
   const updated = await ticketModel.setCheckedInByCode(ticketCode);
   if (!updated) {
     const again = await ticketModel.findTicketByCode(ticketCode);

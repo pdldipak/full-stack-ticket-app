@@ -7,4 +7,6 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: join(__dirname, '../.env'), override: true });
+// Do not use override: true — it would replace Docker / injected env (e.g. TICKET_CODE_EVENT_SLUG)
+// with backend/.env and truncate slugs like NY-2083 to a wrong value.
+dotenv.config({ path: join(__dirname, '../.env') });
