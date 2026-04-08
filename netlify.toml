@@ -1,23 +1,16 @@
 [build]
   # Tell Netlify to go into the frontend folder to run the build
   base = "frontend"
-  # The command to create the production files
+  # The command to create the built static files
   command = "npm run build"
   # The folder Vite creates after building
   publish = "dist"
 
+# Same-origin API under /api — avoids clashing with React routes (/tickets, /tickets/detail/…).
+# (Netlify Functions only run at /.netlify/functions/<name> with no extra path segments, so /api/* proxy is used instead.)
 [[redirects]]
-  from = "/auth/*"
-  to = "http://161.35.200.119/auth/:splat"
-  status = 200
-  force = true
-
-# Do NOT proxy /tickets/* to the API. React uses /tickets, /tickets/new, /tickets/detail/:code
-# — a full page load must serve index.html. API calls use VITE_API_URL (see [build.environment]).
-
-[[redirects]]
-  from = "/public/*"
-  to = "http://161.35.200.119/public/:splat"
+  from = "/api/*"
+  to = "http://161.35.200.119/:splat"
   status = 200
   force = true
 
@@ -28,16 +21,17 @@
   force = true
 
 [[redirects]]
-  # This fixes the "404 on refresh" issue for React Router
+  # SPA: do not proxy /tickets/* to the API (see comment above).
   from = "/*"
   to = "/index.html"
   status = 200
 
-[functions]
-  # Repo root path; build base is "frontend" but functions live under frontend/netlify/functions
-  directory = "frontend/netlify/functions"
+# Avoid stale JSON for ticket lists (304 + empty body confusion in devtools).
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate"
 
 [build.environment]
   NODE_VERSION = "20"
-  # Same-origin API via serverless proxy — avoids clashing with React Router paths under /tickets
-  VITE_API_URL = "/.netlify/functions/api"
+  VITE_API_URL = "/api"
