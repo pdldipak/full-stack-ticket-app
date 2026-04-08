@@ -12,11 +12,8 @@
   status = 200
   force = true
 
-[[redirects]]
-  from = "/tickets/*"
-  to = "http://161.35.200.119/tickets/:splat"
-  status = 200
-  force = true
+# Do NOT proxy /tickets/* to the API. React uses /tickets, /tickets/new, /tickets/detail/:code
+# — a full page load must serve index.html. API calls use VITE_API_URL (see [build.environment]).
 
 [[redirects]]
   from = "/public/*"
@@ -36,5 +33,11 @@
   to = "/index.html"
   status = 200
 
+[functions]
+  # Repo root path; build base is "frontend" but functions live under frontend/netlify/functions
+  directory = "frontend/netlify/functions"
+
 [build.environment]
   NODE_VERSION = "20"
+  # Same-origin API via serverless proxy — avoids clashing with React Router paths under /tickets
+  VITE_API_URL = "/.netlify/functions/api"

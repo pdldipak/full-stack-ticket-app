@@ -1,5 +1,5 @@
+# Do not proxy /tickets/* — SPA routes like /tickets/detail/:code must fall through to /* → index.html.
 /auth/*    http://161.35.200.119/auth/:splat    200!
-/tickets/* http://161.35.200.119/tickets/:splat 200!
 /public/*  http://161.35.200.119/public/:splat  200!
 /health    http://161.35.200.119/health         200!
 /*         /index.html                           200

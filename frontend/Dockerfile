@@ -1,4 +1,4 @@
-# Build static assets (empty VITE_API_URL = same-origin; nginx proxies /auth, /tickets, /health)
+# Build static assets (empty VITE_API_URL = same-origin; nginx proxies API paths — see nginx.conf for /tickets vs SPA)
 FROM node:20-alpine AS build
 WORKDIR /app
 
