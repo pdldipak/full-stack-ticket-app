@@ -7,7 +7,9 @@ RUN npm install
 
 COPY . .
 ENV VITE_API_URL=
-RUN npm run build
+
+# FIX: Limit Node's memory to 768MB to prevent the Droplet from freezing
+RUN NODE_OPTIONS="--max-old-space-size=768" npm run build
 
 FROM nginx:1.27-alpine
 COPY --from=build /app/dist /usr/share/nginx/html

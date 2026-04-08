@@ -5,7 +5,11 @@ export default defineConfig({
   plugins: [react()],
   build: {
     sourcemap: false,
+    cssCodeSplit: true, // Split CSS to reduce memory load
+    chunkSizeWarningLimit: 500,
     rollupOptions: {
+      // LIMIT PARALLELISM: This is the most important for 1GB RAM
+      maxParallelFileOps: 2,
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
