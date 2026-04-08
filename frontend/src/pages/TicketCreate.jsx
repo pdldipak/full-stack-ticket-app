@@ -160,7 +160,9 @@ export default function TicketCreate() {
               Time:{' '}
               <strong className={styles.ticketForm__strong}>{getEventTimeForCity(city)}</strong>
             </span>
-            <span className={styles.ticketForm__venueLine}>Venue: {getVenueForCity(city) || '—'}</span>
+            <span className={styles.ticketForm__venueLine}>
+              Venue: {getVenueForCity(city) || '—'}
+            </span>
           </p>
         </div>
 
@@ -194,7 +196,8 @@ export default function TicketCreate() {
             className={styles.ticketForm__input}
           />
           <p className={styles.ticketForm__hint}>
-            Swedish kronor (kr). Updates automatically from attendance (200 / 125 / 0); you can edit to override.
+            Swedish kronor (kr). Updates automatically from attendance (200 / 125 / 0); you can edit
+            to override.
           </p>
         </div>
 

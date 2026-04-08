@@ -61,18 +61,15 @@ export function AuthProvider({ children }) {
     localStorage.setItem('sellerUsernames', JSON.stringify(sellerUsernames));
   }, [sellerUsernames]);
 
-  const login = useCallback(
-    (newToken, user, cities, userRole = 'seller', sellersList = null) => {
-      setToken(newToken);
-      setUsername(user);
-      if (userRole === 'scanner') setRole('scanner');
-      else if (userRole === 'admin') setRole('admin');
-      else setRole('seller');
-      setAllowedCities(Array.isArray(cities) ? cities : []);
-      setSellerUsernames(Array.isArray(sellersList) ? sellersList : []);
-    },
-    []
-  );
+  const login = useCallback((newToken, user, cities, userRole = 'seller', sellersList = null) => {
+    setToken(newToken);
+    setUsername(user);
+    if (userRole === 'scanner') setRole('scanner');
+    else if (userRole === 'admin') setRole('admin');
+    else setRole('seller');
+    setAllowedCities(Array.isArray(cities) ? cities : []);
+    setSellerUsernames(Array.isArray(sellersList) ? sellersList : []);
+  }, []);
 
   const logout = useCallback(() => {
     setToken(null);
@@ -94,11 +91,7 @@ export function AuthProvider({ children }) {
       try {
         const { data } = await api.get('/auth/me');
         if (cancelled) return;
-        if (
-          data?.role === 'scanner' ||
-          data?.role === 'seller' ||
-          data?.role === 'admin'
-        ) {
+        if (data?.role === 'scanner' || data?.role === 'seller' || data?.role === 'admin') {
           setRole(data.role);
         }
         if (Array.isArray(data?.allowedCities)) {

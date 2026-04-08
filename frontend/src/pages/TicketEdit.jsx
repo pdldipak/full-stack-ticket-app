@@ -7,7 +7,11 @@ import { useAuth } from '@src/context/AuthContext.jsx';
 import FormErrorAlert from '@src/components/common/FormErrorAlert.jsx';
 import { isSameSeller } from '@src/utils/sellerMatch.js';
 import { getApiErrorMessage } from '@src/utils/apiError.js';
-import { getEventDateForCity, getEventTimeForCity, getVenueForCity } from '@src/config/eventConfig.js';
+import {
+  getEventDateForCity,
+  getEventTimeForCity,
+  getVenueForCity,
+} from '@src/config/eventConfig.js';
 import { PAID_TO_OPTIONS, PAID_TO_SELLER } from '@src/constants/payment.js';
 import { computeOrderTotalSek } from '@src/constants/orderPricing.js';
 import styles from '@src/styles/ticketForm.module.css';
@@ -59,9 +63,7 @@ export default function TicketEdit() {
         }
         setTicketCheckedIn(Boolean(t.checkedIn));
         if (role === 'admin') {
-          const choices = [
-            ...new Set([...sellerUsernames, username].filter(Boolean)),
-          ];
+          const choices = [...new Set([...sellerUsernames, username].filter(Boolean))];
           let attr = t.soldBy || '';
           if (choices.length && !choices.includes(attr)) {
             attr = choices[0];
@@ -89,7 +91,9 @@ export default function TicketEdit() {
         setPrice(String(t.price));
         setCity(t.city || 'Stockholm');
         setPaid(Boolean(t.paid));
-        setPaidTo(t.paidTo && PAID_TO_OPTIONS.some((o) => o.value === t.paidTo) ? t.paidTo : PAID_TO_SELLER);
+        setPaidTo(
+          t.paidTo && PAID_TO_OPTIONS.some((o) => o.value === t.paidTo) ? t.paidTo : PAID_TO_SELLER
+        );
         setCanEdit(true);
       } catch (err) {
         if (!cancelled) {
@@ -180,7 +184,8 @@ export default function TicketEdit() {
         <form onSubmit={handleSubmit} className={styles.ticketForm__card}>
           {role === 'admin' && ticketCheckedIn && (
             <p className={styles.ticketForm__amberBanner}>
-              This ticket is checked in. As admin you can still edit or reassign the seller; use care.
+              This ticket is checked in. As admin you can still edit or reassign the seller; use
+              care.
             </p>
           )}
           {role === 'admin' && attributionChoices.length > 0 && (
@@ -199,8 +204,8 @@ export default function TicketEdit() {
                 ))}
               </select>
               <p className={styles.ticketForm__hint}>
-                Seller accounts must be allowed for the program city below. You may credit the ticket to your admin
-                username.
+                Seller accounts must be allowed for the program city below. You may credit the
+                ticket to your admin username.
               </p>
             </div>
           )}
@@ -263,7 +268,9 @@ export default function TicketEdit() {
                 Time:{' '}
                 <strong className={styles.ticketForm__strong}>{getEventTimeForCity(city)}</strong>
               </span>
-              <span className={styles.ticketForm__venueLine}>Venue: {getVenueForCity(city) || '—'}</span>
+              <span className={styles.ticketForm__venueLine}>
+                Venue: {getVenueForCity(city) || '—'}
+              </span>
             </p>
           </div>
 
@@ -279,7 +286,8 @@ export default function TicketEdit() {
               className={styles.ticketForm__input}
             />
             <p className={styles.ticketForm__hint}>
-              Swedish kronor (kr). Updates automatically from attendance (200 / 125 / 0); you can edit to override.
+              Swedish kronor (kr). Updates automatically from attendance (200 / 125 / 0); you can
+              edit to override.
             </p>
           </div>
 
@@ -315,7 +323,10 @@ export default function TicketEdit() {
             <button type="submit" disabled={saving} className={styles.ticketForm__submit}>
               {saving ? 'Saving…' : 'Save changes'}
             </button>
-            <Link to={`/tickets/detail/${encodeURIComponent(code)}`} className={styles.ticketForm__cancel}>
+            <Link
+              to={`/tickets/detail/${encodeURIComponent(code)}`}
+              className={styles.ticketForm__cancel}
+            >
               Cancel
             </Link>
           </div>

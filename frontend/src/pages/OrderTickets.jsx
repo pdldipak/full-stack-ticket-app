@@ -150,13 +150,13 @@ export default function OrderTickets() {
             <span className={styles.orderTickets__headlineGradient}>{ORDER_PAGE_HEADLINE}</span>
             <span className={styles.orderTickets__headlineBadge}>{ORDER_PAGE_NO_LOGIN_BADGE}</span>
           </p>
-          <HeroSubtitle className={styles.orderTickets__heroSubtitle}>{ORDER_PAGE_INTRO}</HeroSubtitle>
+          <HeroSubtitle className={styles.orderTickets__heroSubtitle}>
+            {ORDER_PAGE_INTRO}
+          </HeroSubtitle>
         </div>
       </div>
 
-      {loadSellersError && (
-        <FormErrorAlert message={loadSellersError} variant="hero" />
-      )}
+      {loadSellersError && <FormErrorAlert message={loadSellersError} variant="hero" />}
 
       <MessageDialog
         open={Boolean(success)}
@@ -166,11 +166,12 @@ export default function OrderTickets() {
         closeLabel="OK"
       >
         <p>
-          Thank you. Your request was registered. The seller you chose or an admin must verify the order in the portal
-          before it is treated as confirmed.
+          Thank you. Your request was registered. The seller you chose or an admin must verify the
+          order in the portal before it is treated as confirmed.
         </p>
         <p className={styles.orderTickets__successCode}>
-          Your ticket code: <strong className={styles.orderTickets__successCodeStrong}>{success?.ticketCode}</strong>
+          Your ticket code:{' '}
+          <strong className={styles.orderTickets__successCodeStrong}>{success?.ticketCode}</strong>
         </p>
         {success?.qrImageBase64 && (
           <div className={styles.orderTickets__qrBlock}>
@@ -184,8 +185,9 @@ export default function OrderTickets() {
           </div>
         )}
         <p className={styles.orderTickets__successFootnote}>
-          Save this code. The seller you picked or an admin must verify the order in the portal. The total amount
-          above is stored with your request; payment and verification are completed in the portal.
+          Save this code. The seller you picked or an admin must verify the order in the portal. The
+          total amount above is stored with your request; payment and verification are completed in
+          the portal.
         </p>
       </MessageDialog>
 
@@ -233,8 +235,8 @@ export default function OrderTickets() {
               className={styles.orderTickets__consentCheckbox}
             />
             <span className={styles.orderTickets__consentText}>
-              I agree that committee members of this program may contact me using the phone number I provide above.{' '}
-              <span className={styles.orderTickets__required}>*</span>
+              I agree that committee members of this program may contact me using the phone number I
+              provide above. <span className={styles.orderTickets__required}>*</span>
             </span>
           </label>
         </div>
@@ -262,7 +264,8 @@ export default function OrderTickets() {
             required
           />
           <p className={tf.ticketForm__hint}>
-            {getEventDateForCity(city)} · {getEventTimeForCity(city)} · {getVenueForCity(city) || 'Venue TBA'}
+            {getEventDateForCity(city)} · {getEventTimeForCity(city)} ·{' '}
+            {getVenueForCity(city) || 'Venue TBA'}
           </p>
         </div>
 
@@ -285,7 +288,8 @@ export default function OrderTickets() {
               <option value="">Could not load sellers — check API is running (port 3001)</option>
             ) : sellers.length === 0 ? (
               <option value="">
-                No sellers — set SELLER_USERNAMES and SELLER_PASSWORDS in backend/.env and restart the API
+                No sellers — set SELLER_USERNAMES and SELLER_PASSWORDS in backend/.env and restart
+                the API
               </option>
             ) : (
               sellers.map((s) => {
@@ -354,10 +358,7 @@ export default function OrderTickets() {
 
         <PrimaryGradientButton
           disabled={
-            submitting ||
-            !sellersRequestDone ||
-            sellers.length === 0 ||
-            !String(soldBy).trim()
+            submitting || !sellersRequestDone || sellers.length === 0 || !String(soldBy).trim()
           }
         >
           {submitting ? 'Sending…' : 'Submit order'}

@@ -1,5 +1,8 @@
 export { default as AuthAlternateLink } from '@src/components/common/AuthAlternateLink.jsx';
-export { default as AuthFormCard, authFormCardClass } from '@src/components/common/AuthFormCard.jsx';
+export {
+  default as AuthFormCard,
+  authFormCardClass,
+} from '@src/components/common/AuthFormCard.jsx';
 export { default as AuthRoleBadge } from '@src/components/common/AuthRoleBadge.jsx';
 export { default as AuthShell } from '@src/components/common/AuthShell.jsx';
 export { default as AuthTextField } from '@src/components/common/AuthTextField.jsx';

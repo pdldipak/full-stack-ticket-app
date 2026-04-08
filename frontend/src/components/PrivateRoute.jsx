@@ -7,9 +7,7 @@ export default function PrivateRoute({ children, allowedRoles }) {
 
   if (!isAuthenticated) {
     const scannerOnly =
-      Array.isArray(allowedRoles) &&
-      allowedRoles.length === 1 &&
-      allowedRoles[0] === 'scanner';
+      Array.isArray(allowedRoles) && allowedRoles.length === 1 && allowedRoles[0] === 'scanner';
     const loginPath = scannerOnly ? '/scanner-login' : '/login';
     return <Navigate to={loginPath} state={{ from: location }} replace />;
   }

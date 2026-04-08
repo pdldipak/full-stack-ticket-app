@@ -24,7 +24,11 @@ export class ErrorBoundary extends Component {
             <p className={styles.errorBoundary__text}>
               Reload the page. If the problem continues, contact support.
             </p>
-            <button type="button" className={styles.errorBoundary__reload} onClick={() => window.location.reload()}>
+            <button
+              type="button"
+              className={styles.errorBoundary__reload}
+              onClick={() => window.location.reload()}
+            >
               Reload
             </button>
           </div>

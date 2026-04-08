@@ -34,7 +34,8 @@ export default function AttendanceFields({
         Attendance <span className={styles.attendanceFields__legendRequired}>*</span>
       </legend>
       <p className={styles.attendanceFields__hint}>
-        Adults, student, and children. At least one person total. Total attendance is the sum of the three.
+        Adults, student, and children. At least one person total. Total attendance is the sum of the
+        three.
       </p>
       <div className={styles.attendanceFields__grid}>
         <div>
@@ -87,8 +88,7 @@ export default function AttendanceFields({
         </div>
       </div>
       <p className={styles.attendanceFields__summary}>
-        Total attendance:{' '}
-        <span className={styles.attendanceFields__summaryStrong}>{total}</span>
+        Total attendance: <span className={styles.attendanceFields__summaryStrong}>{total}</span>
       </p>
       {showOrderPricing && totalCostSek != null && (
         <>
@@ -98,7 +98,9 @@ export default function AttendanceFields({
           </p>
           <p className={styles.attendanceFields__pricingHint}>
             {ORDER_ADULT_PRICE_SEK} kr per adult · {ORDER_STUDENT_PRICE_SEK} kr per student ·{' '}
-            {ORDER_CHILD_PRICE_SEK === 0 ? 'children free' : `${ORDER_CHILD_PRICE_SEK} kr per child`}
+            {ORDER_CHILD_PRICE_SEK === 0
+              ? 'children free'
+              : `${ORDER_CHILD_PRICE_SEK} kr per child`}
           </p>
         </>
       )}

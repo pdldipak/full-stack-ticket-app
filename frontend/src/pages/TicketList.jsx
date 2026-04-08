@@ -134,9 +134,7 @@ export default function TicketList() {
       setDeleteTarget(null);
       fetchTickets();
     } catch (err) {
-      setDeleteError(
-        err.response?.data?.error || err.message || 'Could not delete ticket'
-      );
+      setDeleteError(err.response?.data?.error || err.message || 'Could not delete ticket');
     } finally {
       setDeleteLoading(false);
     }
@@ -150,16 +148,16 @@ export default function TicketList() {
           <p className={styles.ticketList__intro}>
             {role === 'admin' ? (
               <>
-                Signed in as <span className={styles.ticketList__username}>{username}</span> (admin).
-                All sellers&apos; tickets are listed unless you filter by seller below. Your cities:{' '}
-                {allowedCities.length ? allowedCities.join(', ') : 'loading…'}.
+                Signed in as <span className={styles.ticketList__username}>{username}</span>{' '}
+                (admin). All sellers&apos; tickets are listed unless you filter by seller below.
+                Your cities: {allowedCities.length ? allowedCities.join(', ') : 'loading…'}.
               </>
             ) : (
               <>
-                Signed in as <span className={styles.ticketList__username}>{username}</span>. By default
-                you see only tickets where you are the verifying seller. Choose &quot;All tickets (everyone)&quot; in the
-                list filter below to see every seller and admin. Your cities:{' '}
-                {allowedCities.length ? allowedCities.join(', ') : 'loading…'}.
+                Signed in as <span className={styles.ticketList__username}>{username}</span>. By
+                default you see only tickets where you are the verifying seller. Choose &quot;All
+                tickets (everyone)&quot; in the list filter below to see every seller and admin.
+                Your cities: {allowedCities.length ? allowedCities.join(', ') : 'loading…'}.
               </>
             )}
           </p>
@@ -293,19 +291,27 @@ export default function TicketList() {
                 return (
                   <tr
                     key={t.id ?? t.ticketCode}
-                    className={needsVerify ? styles.ticketList__rowPending : styles.ticketList__rowMuted}
+                    className={
+                      needsVerify ? styles.ticketList__rowPending : styles.ticketList__rowMuted
+                    }
                   >
                     <td className={styles.ticketList__cell}>
                       <Link
                         to={`/tickets/detail/${encodeURIComponent(t.ticketCode)}`}
-                        className={needsVerify ? styles.ticketList__linkCodePending : styles.ticketList__linkCodeOk}
+                        className={
+                          needsVerify
+                            ? styles.ticketList__linkCodePending
+                            : styles.ticketList__linkCodeOk
+                        }
                       >
                         {t.ticketCode}
                       </Link>
                     </td>
                     <td
                       className={`${styles.ticketList__cell} ${
-                        needsVerify ? styles.ticketList__cellPending : styles.ticketList__cellDefault
+                        needsVerify
+                          ? styles.ticketList__cellPending
+                          : styles.ticketList__cellDefault
                       }`}
                     >
                       {t.fullName}
@@ -372,7 +378,9 @@ export default function TicketList() {
                     </td>
                     <td
                       className={`${styles.ticketList__cell} ${
-                        needsVerify ? styles.ticketList__paidToCellPending : styles.ticketList__paidToCell
+                        needsVerify
+                          ? styles.ticketList__paidToCellPending
+                          : styles.ticketList__paidToCell
                       }`}
                     >
                       {Boolean(t.paid) ? labelForPaidTo(t.paidTo) : '—'}
@@ -394,10 +402,14 @@ export default function TicketList() {
                     </td>
                     <td
                       className={
-                        needsVerify ? styles.ticketList__sourceCellPending : styles.ticketList__sourceCell
+                        needsVerify
+                          ? styles.ticketList__sourceCellPending
+                          : styles.ticketList__sourceCell
                       }
                     >
-                      <span className={styles.ticketList__sourceLabel}>{labelSubmissionSource(t.submissionSource)}</span>
+                      <span className={styles.ticketList__sourceLabel}>
+                        {labelSubmissionSource(t.submissionSource)}
+                      </span>
                       {needsVerify && (
                         <span className={styles.ticketList__needsVerify}>Needs verification</span>
                       )}
@@ -414,9 +426,7 @@ export default function TicketList() {
                           <button
                             type="button"
                             className={styles.ticketList__actionDelete}
-                            onClick={() =>
-                              openDeleteDialog(t.ticketCode, t.soldBy, t.checkedIn)
-                            }
+                            onClick={() => openDeleteDialog(t.ticketCode, t.soldBy, t.checkedIn)}
                           >
                             Delete
                           </button>
@@ -433,7 +443,9 @@ export default function TicketList() {
         </table>
         {!loading && (
           <div className={styles.ticketList__summary}>
-            <h2 className={styles.ticketList__summaryTitle}>Collected amounts (paid tickets only)</h2>
+            <h2 className={styles.ticketList__summaryTitle}>
+              Collected amounts (paid tickets only)
+            </h2>
             <p className={styles.ticketList__summaryIntro}>
               Based on the tickets currently shown ({paidCollectionSummary.paidCount} paid
               {tickets.length !== paidCollectionSummary.paidCount
@@ -451,7 +463,9 @@ export default function TicketList() {
                     {paidCollectionSummary.byCity.map(([city, amount]) => (
                       <li key={city} className={styles.ticketList__summaryRow}>
                         <span>{city}</span>
-                        <span className={styles.ticketList__summaryAmount}>{formatSek(amount)}</span>
+                        <span className={styles.ticketList__summaryAmount}>
+                          {formatSek(amount)}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -466,7 +480,9 @@ export default function TicketList() {
                     {paidCollectionSummary.bySeller.map(([seller, amount]) => (
                       <li key={seller} className={styles.ticketList__summaryRow}>
                         <span className={styles.ticketList__summarySeller}>{seller}</span>
-                        <span className={styles.ticketList__summarySellerAmt}>{formatSek(amount)}</span>
+                        <span className={styles.ticketList__summarySellerAmt}>
+                          {formatSek(amount)}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -485,9 +501,7 @@ export default function TicketList() {
         open={Boolean(deleteTarget)}
         title="Delete ticket?"
         message={
-          deleteTarget
-            ? `Delete ticket ${deleteTarget.ticketCode}? This cannot be undone.`
-            : ''
+          deleteTarget ? `Delete ticket ${deleteTarget.ticketCode}? This cannot be undone.` : ''
         }
         confirmLabel="Delete"
         cancelLabel="Cancel"

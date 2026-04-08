@@ -3,7 +3,14 @@ import styles from './ThemeToggle.module.css';
 
 function IconSun({ className }) {
   return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden>
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      aria-hidden
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -15,7 +22,14 @@ function IconSun({ className }) {
 
 function IconMoon({ className }) {
   return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden>
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      aria-hidden
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

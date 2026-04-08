@@ -104,10 +104,9 @@ export default function TicketDetail() {
     setVerifyDialogError('');
     setVerifyLoading(true);
     try {
-      await api.post(
-        `/tickets/${encodeURIComponent(ticket.ticketCode)}/verify`,
-        { phone: trimmed }
-      );
+      await api.post(`/tickets/${encodeURIComponent(ticket.ticketCode)}/verify`, {
+        phone: trimmed,
+      });
       setVerifyDialogOpen(false);
       setVerifyPhoneInput('');
       navigate('/tickets');
@@ -142,19 +141,26 @@ export default function TicketDetail() {
     <div className={styles.ticketDetail__page}>
       <div className={styles.ticketDetail__headerRow}>
         <div>
-          <h1 className={needsWebVerify ? styles.ticketDetail__titleWarn : styles.ticketDetail__titleOk}>
+          <h1
+            className={
+              needsWebVerify ? styles.ticketDetail__titleWarn : styles.ticketDetail__titleOk
+            }
+          >
             {ticket.ticketCode}
           </h1>
           <p className={styles.ticketDetail__org}>{EVENT_ORGANIZER}</p>
           <p className={styles.ticketDetail__eventLine}>
             {EVENT_TITLE} · {EVENT_ARTIST}
           </p>
-          <p className={needsWebVerify ? styles.ticketDetail__nameWarn : styles.ticketDetail__nameOk}>
+          <p
+            className={needsWebVerify ? styles.ticketDetail__nameWarn : styles.ticketDetail__nameOk}
+          >
             {ticket.fullName}
           </p>
           {needsWebVerify && (
             <p className={styles.ticketDetail__verifyBanner}>
-              Web order — verification required. Confirm using the same phone number the customer entered on the web form.
+              Web order — verification required. Confirm using the same phone number the customer
+              entered on the web form.
             </p>
           )}
         </div>
@@ -183,7 +189,11 @@ export default function TicketDetail() {
               >
                 Edit
               </Link>
-              <button type="button" onClick={openDeleteDialog} className={styles.ticketDetail__btnDelete}>
+              <button
+                type="button"
+                onClick={openDeleteDialog}
+                className={styles.ticketDetail__btnDelete}
+              >
                 Delete
               </button>
             </>
@@ -209,8 +219,8 @@ export default function TicketDetail() {
               Verify web order
             </h2>
             <p className={styles.ticketDetail__modalBody}>
-              Type the same phone number the customer used on the web order. It must match exactly (spaces and formatting
-              can differ).
+              Type the same phone number the customer used on the web order. It must match exactly
+              (spaces and formatting can differ).
             </p>
             {ticket.phone && (
               <p className={styles.ticketDetail__modalHint}>
@@ -266,19 +276,21 @@ export default function TicketDetail() {
         )}
         <dl className={styles.ticketDetail__dl}>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               City
             </dt>
             <dd
-              className={
-                needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd}
             >
               {ticket.city || '—'}
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Concert date
             </dt>
             <dd
@@ -288,7 +300,9 @@ export default function TicketDetail() {
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Time
             </dt>
             <dd
@@ -298,7 +312,9 @@ export default function TicketDetail() {
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Venue
             </dt>
             <dd
@@ -308,7 +324,9 @@ export default function TicketDetail() {
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Phone
             </dt>
             <dd
@@ -319,7 +337,9 @@ export default function TicketDetail() {
           </div>
           {ticket.submissionSource === 'public' && (
             <div className={styles.ticketDetail__row}>
-              <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+              <dt
+                className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+              >
                 Phone contact consent
               </dt>
               <dd
@@ -330,7 +350,9 @@ export default function TicketDetail() {
             </div>
           )}
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Order source
             </dt>
             <dd
@@ -349,7 +371,9 @@ export default function TicketDetail() {
             </div>
           )}
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Ticket type
             </dt>
             <dd
@@ -359,14 +383,19 @@ export default function TicketDetail() {
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Attendance
             </dt>
             <dd
-              className={needsWebVerify ? styles.ticketDetail__ddBlockDanger : styles.ticketDetail__ddBlock}
+              className={
+                needsWebVerify ? styles.ticketDetail__ddBlockDanger : styles.ticketDetail__ddBlock
+              }
             >
               <span className={styles.ticketDetail__attendanceLine}>
-                Adults {ticket.countAdults ?? 0}, student {ticket.countStudent ?? 0}, child {ticket.countChild ?? 0}
+                Adults {ticket.countAdults ?? 0}, student {ticket.countStudent ?? 0}, child{' '}
+                {ticket.countChild ?? 0}
               </span>
               <span className={styles.ticketDetail__attendanceSub}>
                 Total attendance: {ticket.ticketCount ?? 0}
@@ -374,27 +403,37 @@ export default function TicketDetail() {
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Price (SEK)
             </dt>
             <dd
-              className={needsWebVerify ? styles.ticketDetail__ddBlockDanger : styles.ticketDetail__ddBlock}
+              className={
+                needsWebVerify ? styles.ticketDetail__ddBlockDanger : styles.ticketDetail__ddBlock
+              }
             >
               {formatSek(ticket.price)}
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Sold by
             </dt>
             <dd
-              className={needsWebVerify ? styles.ticketDetail__ddBlockDanger : styles.ticketDetail__ddBlock}
+              className={
+                needsWebVerify ? styles.ticketDetail__ddBlockDanger : styles.ticketDetail__ddBlock
+              }
             >
               {ticket.soldBy}
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Paid
             </dt>
             <dd
@@ -412,7 +451,9 @@ export default function TicketDetail() {
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Payment to
             </dt>
             <dd
@@ -422,7 +463,9 @@ export default function TicketDetail() {
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Checked in
             </dt>
             <dd
@@ -440,7 +483,9 @@ export default function TicketDetail() {
             </dd>
           </div>
           <div className={styles.ticketDetail__row}>
-            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
+            <dt
+              className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}
+            >
               Created
             </dt>
             <dd
@@ -448,9 +493,7 @@ export default function TicketDetail() {
                 needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__ddCreated
               }
             >
-              {ticket.createdAt
-                ? new Date(ticket.createdAt).toLocaleString()
-                : '—'}
+              {ticket.createdAt ? new Date(ticket.createdAt).toLocaleString() : '—'}
             </dd>
           </div>
         </dl>
@@ -471,11 +514,7 @@ export default function TicketDetail() {
       <ConfirmDialog
         open={deleteDialogOpen}
         title="Delete ticket?"
-        message={
-          ticket
-            ? `Delete ticket ${ticket.ticketCode}? This cannot be undone.`
-            : ''
-        }
+        message={ticket ? `Delete ticket ${ticket.ticketCode}? This cannot be undone.` : ''}
         confirmLabel="Delete"
         cancelLabel="Cancel"
         isLoading={deleteLoading}

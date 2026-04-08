@@ -31,7 +31,14 @@ export function IconLock({ className = 'h-5 w-5' }) {
 
 export function IconWarningTriangle({ className = 'h-5 w-5' }) {
   return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden>
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      aria-hidden
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -43,7 +50,14 @@ export function IconWarningTriangle({ className = 'h-5 w-5' }) {
 
 export function IconTicketsSmall({ className = 'h-4 w-4' }) {
   return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.75} stroke="currentColor" aria-hidden>
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.75}
+      stroke="currentColor"
+      aria-hidden
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -55,7 +69,14 @@ export function IconTicketsSmall({ className = 'h-4 w-4' }) {
 
 export function IconQrGridSmall({ className = 'h-4 w-4' }) {
   return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.75} stroke="currentColor" aria-hidden>
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.75}
+      stroke="currentColor"
+      aria-hidden
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

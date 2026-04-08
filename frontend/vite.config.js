@@ -53,11 +53,7 @@ export default defineConfig({
          */
         bypass(req) {
           const accept = req.headers.accept ?? '';
-          if (
-            req.method === 'GET' &&
-            typeof accept === 'string' &&
-            accept.includes('text/html')
-          ) {
+          if (req.method === 'GET' && typeof accept === 'string' && accept.includes('text/html')) {
             return '/index.html';
           }
         },

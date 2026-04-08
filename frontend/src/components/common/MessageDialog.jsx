@@ -29,7 +29,9 @@ export default function MessageDialog({
     <div className={styles.messageDialog__root} role="presentation">
       <button
         type="button"
-        className={isSuccess ? styles.messageDialog__scrimSuccess : styles.messageDialog__scrimDefault}
+        className={
+          isSuccess ? styles.messageDialog__scrimSuccess : styles.messageDialog__scrimDefault
+        }
         aria-label="Close dialog"
         onClick={onClose}
       />
@@ -62,7 +64,9 @@ export default function MessageDialog({
         <div className={styles.messageDialog__footer}>
           <button
             type="button"
-            className={isSuccess ? styles.messageDialog__btnSuccess : styles.messageDialog__btnDefault}
+            className={
+              isSuccess ? styles.messageDialog__btnSuccess : styles.messageDialog__btnDefault
+            }
             onClick={onClose}
           >
             {closeLabel}

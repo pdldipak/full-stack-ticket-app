@@ -96,11 +96,7 @@ export function getProgramCities() {
 
 if (import.meta.env.DEV) {
   for (const c of CITIES) {
-    if (
-      !(c in CITY_EVENT_DATES) ||
-      !(c in CITY_EVENT_TIMES) ||
-      !(c in CITY_VENUES)
-    ) {
+    if (!(c in CITY_EVENT_DATES) || !(c in CITY_EVENT_TIMES) || !(c in CITY_VENUES)) {
       // eslint-disable-next-line no-console
       console.warn(
         `[eventConfig] City "${c}" is in CITIES but missing from CITY_EVENT_DATES / CITY_EVENT_TIMES / CITY_VENUES.`

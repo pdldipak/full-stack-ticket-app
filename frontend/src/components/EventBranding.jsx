@@ -52,29 +52,48 @@ export default function EventBranding({
       >
         {EVENT_ORGANIZER}
       </p>
-      <p className={forHero ? styles.eventBranding__presentHero : styles.eventBranding__presentPlain}>
+      <p
+        className={forHero ? styles.eventBranding__presentHero : styles.eventBranding__presentPlain}
+      >
         {EVENT_PRESENT_LABEL}
       </p>
       <h1 className={forHero ? styles.eventBranding__titleHero : styles.eventBranding__titlePlain}>
         {EVENT_TITLE}
-        <span className={forHero ? styles.eventBranding__titleSepHero : styles.eventBranding__titleSepPlain}>
+        <span
+          className={
+            forHero ? styles.eventBranding__titleSepHero : styles.eventBranding__titleSepPlain
+          }
+        >
           {' '}
           ·{' '}
         </span>
-        <span className={forHero ? styles.eventBranding__artistHero : styles.eventBranding__artistPlain}>
+        <span
+          className={forHero ? styles.eventBranding__artistHero : styles.eventBranding__artistPlain}
+        >
           {EVENT_ARTIST}
         </span>
       </h1>
-      <div className={forHero ? styles.eventBranding__cityListHero : styles.eventBranding__cityListPlain}>
+      <div
+        className={
+          forHero ? styles.eventBranding__cityListHero : styles.eventBranding__cityListPlain
+        }
+      >
         {cities.map((city) => (
           <p key={city}>
-            <span className={forHero ? styles.eventBranding__cityNameHero : styles.eventBranding__cityNamePlain}>
+            <span
+              className={
+                forHero ? styles.eventBranding__cityNameHero : styles.eventBranding__cityNamePlain
+              }
+            >
               {city}
             </span>{' '}
-            —{' '}
-            {CITY_EVENT_DATES[city]} · {CITY_EVENT_TIMES[city]}
+            — {CITY_EVENT_DATES[city]} · {CITY_EVENT_TIMES[city]}
             <br />
-            <span className={forHero ? styles.eventBranding__venueHero : styles.eventBranding__venuePlain}>
+            <span
+              className={
+                forHero ? styles.eventBranding__venueHero : styles.eventBranding__venuePlain
+              }
+            >
               {isVenueTba(city) ? 'Venue TBA' : CITY_VENUES[city]}
             </span>
           </p>

@@ -65,7 +65,9 @@ function ScannerResultPanel({ message, onDismiss, closeButtonRef }) {
         </div>
         <div className={styles.scannerResult__row}>
           <dt className={styles.scannerResult__dt}>Total attendance</dt>
-          <dd className={styles.scannerResult__dd}>{detail.ticketCount != null ? detail.ticketCount : '—'}</dd>
+          <dd className={styles.scannerResult__dd}>
+            {detail.ticketCount != null ? detail.ticketCount : '—'}
+          </dd>
         </div>
         <div className={styles.scannerResult__row}>
           <dt className={styles.scannerResult__dt}>Marked paid</dt>
@@ -199,9 +201,7 @@ export default function Scanner() {
       setRunning(false);
       setMessage({
         type: 'error',
-        text:
-          err.message ||
-          'Could not start camera. Allow permission or use manual entry.',
+        text: err.message || 'Could not start camera. Allow permission or use manual entry.',
       });
     }
   };
@@ -273,8 +273,8 @@ export default function Scanner() {
         <h1 className={styles.scanner__title}>Entry scanner</h1>
         <p className={styles.scanner__intro}>
           Scan a ticket QR code or enter the ticket code manually. Only tickets marked{' '}
-          <strong className={styles.scanner__introStrong}>paid</strong> in the portal can be checked in; unpaid
-          tickets are rejected.
+          <strong className={styles.scanner__introStrong}>paid</strong> in the portal can be checked
+          in; unpaid tickets are rejected.
         </p>
       </div>
 

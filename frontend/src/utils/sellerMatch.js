@@ -1,6 +1,13 @@
 /** Same seller as logged-in user (trim + case-insensitive). */
 export function isSameSeller(a, b) {
-  return String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase();
+  return (
+    String(a || '')
+      .trim()
+      .toLowerCase() ===
+    String(b || '')
+      .trim()
+      .toLowerCase()
+  );
 }
 
 /**
