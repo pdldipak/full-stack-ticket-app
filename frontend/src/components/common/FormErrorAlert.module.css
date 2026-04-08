@@ -1,0 +1,12 @@
+/** Block: form-error-alert */
+.formErrorAlert__hero {
+  @apply flex items-start gap-3 rounded-xl border border-red-300 bg-red-100 px-4 py-3 text-sm font-normal leading-relaxed text-red-900 dark:border-red-500/30 dark:bg-red-950/60 dark:text-red-100;
+}
+
+.formErrorAlert__heroIcon {
+  @apply h-5 w-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5;
+}
+
+.formErrorAlert__inline {
+  @apply rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-normal leading-relaxed text-red-800 dark:border-red-800 dark:bg-red-950/50 dark:text-red-200;
+}

@@ -1,15 +1,15 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Layout from './components/Layout.jsx';
-import PrivateRoute from './components/PrivateRoute.jsx';
-import Login from './pages/Login.jsx';
-import OrderTickets from './pages/OrderTickets.jsx';
-import ScannerLogin from './pages/ScannerLogin.jsx';
-import TicketList from './pages/TicketList.jsx';
-import TicketCreate from './pages/TicketCreate.jsx';
-import TicketDetail from './pages/TicketDetail.jsx';
-import TicketEdit from './pages/TicketEdit.jsx';
-import Scanner from './pages/Scanner.jsx';
-import { useAuth } from './context/AuthContext.jsx';
+import Layout from '@src/components/Layout.jsx';
+import PrivateRoute from '@src/components/PrivateRoute.jsx';
+import Login from '@src/pages/Login.jsx';
+import OrderTickets from '@src/pages/OrderTickets.jsx';
+import ScannerLogin from '@src/pages/ScannerLogin.jsx';
+import TicketList from '@src/pages/TicketList.jsx';
+import TicketCreate from '@src/pages/TicketCreate.jsx';
+import TicketDetail from '@src/pages/TicketDetail.jsx';
+import TicketEdit from '@src/pages/TicketEdit.jsx';
+import Scanner from '@src/pages/Scanner.jsx';
+import { useAuth } from '@src/context/AuthContext.jsx';
 
 function HomeRedirect() {
   const { role } = useAuth();

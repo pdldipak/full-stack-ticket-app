@@ -1,4 +1,5 @@
-import { IconWarningTriangle } from './icons.jsx';
+import { IconWarningTriangle } from '@src/components/common/icons.jsx';
+import styles from './FormErrorAlert.module.css';
 
 /**
  * @param {object} props
@@ -10,21 +11,15 @@ export default function FormErrorAlert({ message, variant = 'inline' }) {
 
   if (variant === 'hero') {
     return (
-      <div
-        className="rounded-xl bg-red-100 border border-red-300 text-red-900 text-sm px-4 py-3 flex gap-3 items-start dark:bg-red-950/60 dark:border-red-500/30 dark:text-red-100"
-        role="alert"
-      >
-        <IconWarningTriangle className="h-5 w-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+      <div className={styles.formErrorAlert__hero} role="alert">
+        <IconWarningTriangle className={styles.formErrorAlert__heroIcon} />
         <span>{message}</span>
       </div>
     );
   }
 
   return (
-    <div
-      className="rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm px-3 py-2 dark:bg-red-950/50 dark:border-red-800 dark:text-red-200"
-      role="alert"
-    >
+    <div className={styles.formErrorAlert__inline} role="alert">
       {message}
     </div>
   );

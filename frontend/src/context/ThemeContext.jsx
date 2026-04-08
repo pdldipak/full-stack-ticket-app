@@ -19,6 +19,7 @@ export function ThemeProvider({ children }) {
     } else {
       root.classList.remove('dark');
     }
+    root.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {

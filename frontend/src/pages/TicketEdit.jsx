@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import api from '../api/client.js';
-import AttendanceFields from '../components/AttendanceFields.jsx';
-import CitySelect from '../components/CitySelect.jsx';
-import { useAuth } from '../context/AuthContext.jsx';
-import FormErrorAlert from '../components/common/FormErrorAlert.jsx';
-import { isSameSeller } from '../utils/sellerMatch.js';
-import { getApiErrorMessage } from '../utils/apiError.js';
-import { getEventDateForCity, getEventTimeForCity, getVenueForCity } from '../config/eventConfig.js';
-import { PAID_TO_OPTIONS, PAID_TO_SELLER } from '../constants/payment.js';
+import api from '@src/api/client.js';
+import AttendanceFields from '@src/components/AttendanceFields.jsx';
+import CitySelect from '@src/components/CitySelect.jsx';
+import { useAuth } from '@src/context/AuthContext.jsx';
+import FormErrorAlert from '@src/components/common/FormErrorAlert.jsx';
+import { isSameSeller } from '@src/utils/sellerMatch.js';
+import { getApiErrorMessage } from '@src/utils/apiError.js';
+import { getEventDateForCity, getEventTimeForCity, getVenueForCity } from '@src/config/eventConfig.js';
+import { PAID_TO_OPTIONS, PAID_TO_SELLER } from '@src/constants/payment.js';
+import { computeOrderTotalSek } from '@src/constants/orderPricing.js';
+import styles from '@src/styles/ticketForm.module.css';
 
 export default function TicketEdit() {
   const { code } = useParams();
@@ -102,6 +104,14 @@ export default function TicketEdit() {
     };
   }, [code, username, role, sellerUsernames]);
 
+  useEffect(() => {
+    if (!canEdit) return;
+    const a = Number(countAdults) || 0;
+    const s = Number(countStudent) || 0;
+    const c = Number(countChild) || 0;
+    setPrice(String(computeOrderTotalSek(a, s, c)));
+  }, [canEdit, countAdults, countStudent, countChild]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaveError('');
@@ -145,25 +155,20 @@ export default function TicketEdit() {
   };
 
   if (loading) {
-    return (
-      <div className="text-center text-slate-500 dark:text-slate-400 py-12">Loading…</div>
-    );
+    return <div className={styles.ticketForm__loading}>Loading…</div>;
   }
 
   return (
-    <div className="max-w-xl mx-auto space-y-6">
+    <div className={styles.ticketForm__page}>
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Edit ticket</h1>
-        <p className="text-slate-600 dark:text-slate-400 text-sm mt-1 font-mono">{code}</p>
+        <h1 className={styles.ticketForm__title}>Edit ticket</h1>
+        <p className={styles.ticketForm__monoSubtitle}>{code}</p>
       </div>
 
       {loadError && (
         <>
           <FormErrorAlert message={loadError} />
-          <Link
-            to="/tickets"
-            className="inline-block text-sm text-emerald-600 hover:underline dark:text-emerald-400"
-          >
+          <Link to="/tickets" className={styles.ticketForm__linkEmerald}>
             Back to list
           </Link>
         </>
@@ -172,24 +177,19 @@ export default function TicketEdit() {
       <FormErrorAlert message={saveError} />
 
       {canEdit && (
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white border border-slate-200 rounded-xl p-6 space-y-5 dark:bg-slate-900 dark:border-slate-800"
-        >
+        <form onSubmit={handleSubmit} className={styles.ticketForm__card}>
           {role === 'admin' && ticketCheckedIn && (
-            <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
+            <p className={styles.ticketForm__amberBanner}>
               This ticket is checked in. As admin you can still edit or reassign the seller; use care.
             </p>
           )}
           {role === 'admin' && attributionChoices.length > 0 && (
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Sold by (credited account)
-              </label>
+              <label className={styles.ticketForm__label}>Sold by (credited account)</label>
               <select
                 value={soldByAttribution}
                 onChange={(e) => setSoldByAttribution(e.target.value)}
-                className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                className={styles.ticketForm__input}
               >
                 {attributionChoices.map((s) => (
                   <option key={s} value={s}>
@@ -198,34 +198,30 @@ export default function TicketEdit() {
                   </option>
                 ))}
               </select>
-              <p className="text-slate-500 dark:text-slate-500 text-xs mt-1">
+              <p className={styles.ticketForm__hint}>
                 Seller accounts must be allowed for the program city below. You may credit the ticket to your admin
                 username.
               </p>
             </div>
           )}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Full name
-            </label>
+            <label className={styles.ticketForm__label}>Full name</label>
             <input
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              className={styles.ticketForm__input}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Phone (optional)
-            </label>
+            <label className={styles.ticketForm__label}>Phone (optional)</label>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               autoComplete="tel"
-              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              className={styles.ticketForm__input}
             />
           </div>
 
@@ -238,48 +234,41 @@ export default function TicketEdit() {
             onChangeStudent={(e) => setCountStudent(e.target.value)}
             onChangeChild={(e) => setCountChild(e.target.value)}
             disabled={!canEdit}
+            showOrderPricing
           />
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">
-              Ticket type
-            </label>
+            <label className={styles.ticketForm__labelMuted}>Ticket type</label>
             <input
               required
               value={ticketType}
               onChange={(e) => setTicketType(e.target.value)}
-              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              className={styles.ticketForm__input}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">
-              City
-            </label>
+            <label className={styles.ticketForm__labelMuted}>City</label>
             <CitySelect
               value={city}
               onChange={(e) => setCity(e.target.value)}
               allowedCities={allowedCities}
               required
             />
-            <p className="text-slate-600 dark:text-slate-400 text-xs mt-1 space-y-0.5">
-              <span className="block">
+            <p className={styles.ticketForm__cityMeta}>
+              <span className={styles.ticketForm__cityMetaLine}>
                 Date:{' '}
-                <strong className="text-slate-800 dark:text-slate-300">{getEventDateForCity(city)}</strong>
+                <strong className={styles.ticketForm__strong}>{getEventDateForCity(city)}</strong>
                 {' · '}
                 Time:{' '}
-                <strong className="text-slate-800 dark:text-slate-300">{getEventTimeForCity(city)}</strong>
+                <strong className={styles.ticketForm__strong}>{getEventTimeForCity(city)}</strong>
               </span>
-              <span className="block text-slate-500 dark:text-slate-500">
-                Venue: {getVenueForCity(city) || '—'}
-              </span>
+              <span className={styles.ticketForm__venueLine}>Venue: {getVenueForCity(city) || '—'}</span>
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">
-              Price (SEK)
-            </label>
+            <label className={styles.ticketForm__labelMuted}>Price (SEK)</label>
             <input
               type="number"
               min={0}
@@ -287,30 +276,30 @@ export default function TicketEdit() {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               placeholder="0"
-              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              className={styles.ticketForm__input}
             />
-            <p className="text-slate-500 dark:text-slate-500 text-xs mt-1">Leave blank to save as 0 SEK (e.g. web orders).</p>
+            <p className={styles.ticketForm__hint}>
+              Swedish kronor (kr). Updates automatically from attendance (200 / 125 / 0); you can edit to override.
+            </p>
           </div>
 
-          <div className="rounded-lg border border-slate-200 bg-slate-50/80 p-4 space-y-3 dark:border-slate-700 dark:bg-slate-800/40">
-            <label className="flex items-center gap-2 cursor-pointer">
+          <div className={styles.ticketForm__paidBox}>
+            <label className={styles.ticketForm__checkboxRow}>
               <input
                 type="checkbox"
                 checked={paid}
                 onChange={(e) => setPaid(e.target.checked)}
-                className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800"
+                className={styles.ticketForm__checkbox}
               />
-              <span className="text-sm font-medium text-slate-800 dark:text-slate-200">Paid</span>
+              <span className={styles.ticketForm__checkboxLabel}>Paid</span>
             </label>
             {paid && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Payment received by
-                </label>
+                <label className={styles.ticketForm__label}>Payment received by</label>
                 <select
                   value={paidTo}
                   onChange={(e) => setPaidTo(e.target.value)}
-                  className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                  className={styles.ticketForm__input}
                 >
                   {PAID_TO_OPTIONS.map((o) => (
                     <option key={o.value} value={o.value}>
@@ -322,18 +311,11 @@ export default function TicketEdit() {
             )}
           </div>
 
-          <div className="flex gap-3 pt-2">
-            <button
-              type="submit"
-              disabled={saving}
-              className="flex-1 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium disabled:opacity-50 transition"
-            >
+          <div className={styles.ticketForm__actions}>
+            <button type="submit" disabled={saving} className={styles.ticketForm__submit}>
               {saving ? 'Saving…' : 'Save changes'}
             </button>
-            <Link
-              to={`/tickets/detail/${encodeURIComponent(code)}`}
-              className="px-4 py-2.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 transition dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
+            <Link to={`/tickets/detail/${encodeURIComponent(code)}`} className={styles.ticketForm__cancel}>
               Cancel
             </Link>
           </div>

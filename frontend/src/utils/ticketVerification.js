@@ -1,4 +1,4 @@
-import { isSameSeller } from './sellerMatch.js';
+import { isSameSeller } from '@src/utils/sellerMatch.js';
 
 /** Web order not yet confirmed by the assigned seller or an admin. */
 export function pendingWebOrderVerification(ticket) {

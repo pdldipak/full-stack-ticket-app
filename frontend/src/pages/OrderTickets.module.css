@@ -1,0 +1,100 @@
+/** Block: order-tickets */
+.orderTickets__stack {
+  @apply space-y-5;
+}
+
+.orderTickets__heroCard {
+  @apply rounded-2xl border border-emerald-200/70 bg-gradient-to-br from-emerald-50/90 via-white/95 to-teal-50/80 p-5 shadow-lg shadow-emerald-900/10 ring-1 ring-emerald-300/40 dark:border-emerald-700/50 dark:from-emerald-950/40 dark:via-slate-900/90 dark:to-emerald-950/30 dark:shadow-emerald-950/20 dark:ring-emerald-600/20;
+}
+
+.orderTickets__heroSubtitle {
+  @apply mt-3 max-w-md text-base font-normal leading-relaxed text-emerald-950/90 dark:text-emerald-50/95;
+}
+
+.orderTickets__headlineRow {
+  @apply mt-4 text-center text-xl font-extrabold tracking-tight sm:text-2xl;
+}
+
+.orderTickets__headlineGradient {
+  @apply bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-600 bg-clip-text text-transparent dark:from-emerald-300 dark:via-teal-300 dark:to-cyan-300;
+}
+
+.orderTickets__headlineBadge {
+  @apply block text-base font-semibold text-emerald-800/90 dark:text-emerald-200/95 sm:inline sm:ml-2;
+}
+
+.orderTickets__successCode {
+  @apply rounded-lg border border-emerald-200/80 bg-emerald-100/50 px-3 py-2 font-mono text-base text-emerald-950 dark:border-emerald-600/50 dark:bg-emerald-950/50 dark:text-emerald-50;
+}
+
+.orderTickets__successCodeStrong {
+  @apply text-lg tracking-wide;
+}
+
+.orderTickets__qrBlock {
+  @apply flex flex-col items-center pt-2 border-t border-emerald-200/60 dark:border-emerald-700/50;
+}
+
+.orderTickets__qrCaption {
+  @apply mb-2 text-sm font-medium leading-snug text-slate-600 dark:text-slate-400;
+}
+
+.orderTickets__qrImage {
+  @apply w-48 h-48 sm:w-56 sm:h-56 bg-white rounded-lg p-2 border border-emerald-200/80 dark:border-emerald-600/40;
+}
+
+.orderTickets__qrMeta {
+  @apply mt-2 font-mono text-sm leading-normal text-slate-500 dark:text-slate-500;
+}
+
+.orderTickets__successFootnote {
+  @apply text-sm font-normal leading-relaxed text-emerald-900/80 dark:text-emerald-200/80;
+}
+
+.orderTickets__formCardAccent {
+  @apply border-emerald-200/80 ring-2 ring-emerald-400/20 shadow-emerald-900/15 dark:border-emerald-700/60 dark:ring-emerald-500/15 dark:shadow-emerald-950/30;
+}
+
+.orderTickets__consentBox {
+  @apply rounded-lg border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-800/40;
+}
+
+.orderTickets__consentRow {
+  @apply flex items-start gap-3 cursor-pointer;
+}
+
+.orderTickets__consentCheckbox {
+  @apply mt-1 border-slate-300 rounded text-emerald-600 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 shrink-0;
+}
+
+.orderTickets__consentText {
+  @apply text-sm text-slate-800 dark:text-slate-200 leading-snug;
+}
+
+.orderTickets__required {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.orderTickets__fieldset {
+  @apply rounded-lg border border-slate-200 bg-slate-50/80 p-4 space-y-3 dark:border-slate-700 dark:bg-slate-800/40;
+}
+
+.orderTickets__legend {
+  @apply text-sm font-medium text-slate-800 dark:text-slate-200 px-1;
+}
+
+.orderTickets__radioStack {
+  @apply space-y-2;
+}
+
+.orderTickets__radioRow {
+  @apply flex items-center gap-2 cursor-pointer;
+}
+
+.orderTickets__radio {
+  @apply border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800;
+}
+
+.orderTickets__radioLabel {
+  @apply text-sm text-slate-800 dark:text-slate-200;
+}

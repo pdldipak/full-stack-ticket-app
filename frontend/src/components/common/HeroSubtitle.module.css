@@ -1,0 +1,4 @@
+/** Block: hero-subtitle */
+.heroSubtitle {
+  @apply mx-auto max-w-sm text-center text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-100 dark:[text-shadow:0_1px_4px_rgba(0,0,0,0.9)];
+}

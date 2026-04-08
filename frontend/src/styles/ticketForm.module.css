@@ -1,0 +1,99 @@
+/**
+ * Shared ticket form controls (TicketCreate / TicketEdit).
+ * Block: ticket-form
+ */
+.ticketForm__page {
+  @apply max-w-xl mx-auto space-y-6;
+}
+
+.ticketForm__title {
+  @apply text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl;
+}
+
+.ticketForm__subtitle {
+  @apply mt-1 text-sm font-normal leading-relaxed text-slate-600 dark:text-slate-400;
+}
+
+.ticketForm__card {
+  @apply bg-white border border-slate-200 rounded-xl p-6 space-y-5 dark:bg-slate-900 dark:border-slate-800;
+}
+
+.ticketForm__label {
+  @apply mb-1 block text-sm font-medium leading-snug text-slate-700 dark:text-slate-300;
+}
+
+.ticketForm__input {
+  @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base leading-normal text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white;
+}
+
+.ticketForm__inputLoading {
+  @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base leading-normal text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white disabled:opacity-60;
+}
+
+.ticketForm__hint {
+  @apply mt-1 text-sm leading-relaxed text-slate-500 dark:text-slate-500;
+}
+
+.ticketForm__cityMeta {
+  @apply mt-1 space-y-0.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400;
+}
+
+.ticketForm__cityMetaLine {
+  @apply block;
+}
+
+.ticketForm__strong {
+  @apply text-slate-800 dark:text-slate-300;
+}
+
+.ticketForm__venueLine {
+  @apply block text-slate-500 dark:text-slate-500;
+}
+
+.ticketForm__paidBox {
+  @apply rounded-lg border border-slate-200 bg-slate-50/80 p-4 space-y-3 dark:border-slate-700 dark:bg-slate-800/40;
+}
+
+.ticketForm__checkboxRow {
+  @apply flex items-center gap-2 cursor-pointer;
+}
+
+.ticketForm__checkbox {
+  @apply rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800;
+}
+
+.ticketForm__checkboxLabel {
+  @apply text-sm font-medium text-slate-800 dark:text-slate-200;
+}
+
+.ticketForm__actions {
+  @apply flex gap-3 pt-2;
+}
+
+.ticketForm__submit {
+  @apply flex-1 rounded-lg bg-emerald-600 py-2.5 text-base font-semibold leading-snug text-white transition hover:bg-emerald-500 disabled:opacity-50;
+}
+
+.ticketForm__cancel {
+  @apply rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-medium leading-snug text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800;
+}
+
+.ticketForm__labelMuted {
+  @apply mb-1 block text-sm font-medium leading-snug text-slate-400 dark:text-slate-400;
+}
+
+.ticketForm__loading {
+  @apply py-12 text-center text-base leading-relaxed text-slate-500 dark:text-slate-400;
+}
+
+.ticketForm__monoSubtitle {
+  @apply mt-1 font-mono text-sm leading-normal text-slate-600 dark:text-slate-400;
+}
+
+.ticketForm__linkEmerald {
+  @apply inline-block text-sm text-emerald-600 hover:underline dark:text-emerald-400;
+}
+
+.ticketForm__amberBanner {
+  @apply rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100;
+}

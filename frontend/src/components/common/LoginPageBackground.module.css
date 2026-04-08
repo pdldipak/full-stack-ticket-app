@@ -1,0 +1,28 @@
+/** Block: login-page-background */
+.loginPageBackground {
+  @apply pointer-events-none absolute inset-0 overflow-hidden;
+}
+
+.loginPageBackground__base {
+  @apply absolute inset-0 bg-slate-100 dark:bg-slate-950;
+}
+
+.loginPageBackground__image {
+  @apply absolute inset-0 bg-cover bg-no-repeat opacity-[0.22] dark:opacity-100;
+}
+
+.loginPageBackground__wash {
+  @apply absolute inset-0 bg-white/65 dark:bg-black/18;
+}
+
+.loginPageBackground__gradientA {
+  @apply absolute inset-0 bg-gradient-to-b from-slate-100/90 via-slate-100/50 to-slate-200/80 dark:from-transparent dark:via-slate-950/15 dark:to-slate-950/45;
+}
+
+.loginPageBackground__gradientB {
+  @apply absolute inset-0 bg-[radial-gradient(ellipse_95%_85%_at_50%_35%,transparent_0%,rgba(241,245,249,0.85)_100%)] dark:bg-[radial-gradient(ellipse_95%_85%_at_50%_35%,transparent_0%,rgba(15,23,42,0.25)_100%)];
+}
+
+.loginPageBackground__gradientC {
+  @apply absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_50%_-5%,rgba(16,185,129,0.12),transparent_45%)] dark:bg-[radial-gradient(ellipse_120%_80%_at_50%_-5%,rgba(16,185,129,0.06),transparent_45%)];
+}

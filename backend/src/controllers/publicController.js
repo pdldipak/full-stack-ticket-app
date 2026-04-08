@@ -12,6 +12,7 @@ import {
 import * as ticketModel from '../models/ticketModel.js';
 import { generateQrDataUrl } from '../services/qrService.js';
 import { parseAttendanceFromBody } from '../utils/attendance.js';
+import { computePublicOrderTotalSek } from '../config/orderPricing.js';
 
 const PAID_TO_VALUES = ['seller', 'nrna_ncc'];
 const PUBLIC_TICKET_TYPE = 'Web order';
@@ -110,6 +111,11 @@ export async function createPublicTicketRequest(req, res) {
   const fullName = String(req.body.fullName).trim();
   const phone = String(req.body.phone).trim();
   const att = parseAttendanceFromBody(req.body);
+  const priceTotal = computePublicOrderTotalSek(
+    att.countAdults,
+    att.countStudent,
+    att.countChild
+  );
 
   const { id, ticketCode } = await ticketModel.createTicketRow({
     fullName,
@@ -119,7 +125,7 @@ export async function createPublicTicketRequest(req, res) {
     countStudent: att.countStudent,
     countChild: att.countChild,
     ticketType: PUBLIC_TICKET_TYPE,
-    price: 0,
+    price: priceTotal,
     soldBy,
     city: cityTrimmed,
     paid: payment.paid,

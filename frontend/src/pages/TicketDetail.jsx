@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import api from '../api/client.js';
-import FormErrorAlert from '../components/common/FormErrorAlert.jsx';
-import ConfirmDialog from '../components/common/ConfirmDialog.jsx';
-import { getApiErrorMessage } from '../utils/apiError.js';
-import { formatSek } from '../utils/formatCurrency.js';
-import { useAuth } from '../context/AuthContext.jsx';
-import { canMutateTicket } from '../utils/sellerMatch.js';
-import { canVerifyWebOrder, pendingWebOrderVerification } from '../utils/ticketVerification.js';
+import api from '@src/api/client.js';
+import FormErrorAlert from '@src/components/common/FormErrorAlert.jsx';
+import ConfirmDialog from '@src/components/common/ConfirmDialog.jsx';
+import { getApiErrorMessage } from '@src/utils/apiError.js';
+import { formatSek } from '@src/utils/formatCurrency.js';
+import { useAuth } from '@src/context/AuthContext.jsx';
+import { canMutateTicket } from '@src/utils/sellerMatch.js';
+import { canVerifyWebOrder, pendingWebOrderVerification } from '@src/utils/ticketVerification.js';
 import {
   EVENT_ARTIST,
   EVENT_ORGANIZER,
@@ -15,9 +15,10 @@ import {
   getEventDateForCity,
   getEventTimeForCity,
   getVenueForCity,
-} from '../config/eventConfig.js';
-import { labelForPaidTo } from '../constants/payment.js';
-import { labelSubmissionSource } from '../constants/submissionSource.js';
+} from '@src/config/eventConfig.js';
+import { labelForPaidTo } from '@src/constants/payment.js';
+import { labelSubmissionSource } from '@src/constants/submissionSource.js';
+import styles from '@src/pages/TicketDetail.module.css';
 
 export default function TicketDetail() {
   const { code } = useParams();
@@ -118,16 +119,14 @@ export default function TicketDetail() {
   };
 
   if (loading) {
-    return (
-      <div className="text-center text-slate-500 dark:text-slate-400 py-12">Loading ticket…</div>
-    );
+    return <div className={styles.ticketDetail__loading}>Loading ticket…</div>;
   }
 
   if (error || !ticket) {
     return (
-      <div className="space-y-4">
+      <div className={styles.ticketDetail__errorStack}>
         <FormErrorAlert message={error || 'Ticket not found'} />
-        <Link to="/tickets" className="text-emerald-600 hover:underline dark:text-emerald-400">
+        <Link to="/tickets" className={styles.ticketDetail__link}>
           Back to list
         </Link>
       </div>
@@ -140,55 +139,38 @@ export default function TicketDetail() {
   const showVerifyBtn = canVerifyWebOrder(ticket, username, role);
 
   return (
-    <div className="max-w-lg mx-auto space-y-6">
-      <div className="flex justify-between items-start gap-4">
+    <div className={styles.ticketDetail__page}>
+      <div className={styles.ticketDetail__headerRow}>
         <div>
-          <h1
-            className={
-              needsWebVerify
-                ? 'text-2xl font-bold text-red-700 font-mono dark:text-red-300'
-                : 'text-2xl font-bold text-slate-900 dark:text-white font-mono'
-            }
-          >
+          <h1 className={needsWebVerify ? styles.ticketDetail__titleWarn : styles.ticketDetail__titleOk}>
             {ticket.ticketCode}
           </h1>
-          <p className="text-slate-500 dark:text-slate-500 text-xs mt-1">
-            {EVENT_ORGANIZER}
-          </p>
-          <p className="text-slate-600 dark:text-slate-400 text-xs mt-0.5">
+          <p className={styles.ticketDetail__org}>{EVENT_ORGANIZER}</p>
+          <p className={styles.ticketDetail__eventLine}>
             {EVENT_TITLE} · {EVENT_ARTIST}
           </p>
-          <p
-            className={
-              needsWebVerify
-                ? 'text-red-700 dark:text-red-300 text-sm mt-1 font-medium'
-                : 'text-slate-600 dark:text-slate-400 text-sm mt-1'
-            }
-          >
+          <p className={needsWebVerify ? styles.ticketDetail__nameWarn : styles.ticketDetail__nameOk}>
             {ticket.fullName}
           </p>
           {needsWebVerify && (
-            <p className="text-red-700 dark:text-red-300 text-xs mt-1.5 leading-snug">
+            <p className={styles.ticketDetail__verifyBanner}>
               Web order — verification required. Confirm using the same phone number the customer entered on the web form.
             </p>
           )}
         </div>
-        <Link
-          to="/tickets"
-          className="text-sm text-emerald-600 hover:underline shrink-0 dark:text-emerald-400"
-        >
+        <Link to="/tickets" className={styles.ticketDetail__headerLink}>
           All tickets
         </Link>
       </div>
 
       {(canMutate || showVerifyBtn) && (
-        <div className="flex flex-wrap gap-2">
+        <div className={styles.ticketDetail__actions}>
           {showVerifyBtn && (
             <button
               type="button"
               disabled={verifyLoading}
               onClick={openVerifyDialog}
-              className="rounded-lg bg-red-600 hover:bg-red-500 px-4 py-2 text-sm font-medium text-white transition disabled:opacity-50"
+              className={styles.ticketDetail__btnVerify}
             >
               Verify web order
             </button>
@@ -197,15 +179,11 @@ export default function TicketDetail() {
             <>
               <Link
                 to={`/tickets/detail/${encodeURIComponent(ticket.ticketCode)}/edit`}
-                className="rounded-lg bg-emerald-600 hover:bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition"
+                className={styles.ticketDetail__btnEdit}
               >
                 Edit
               </Link>
-              <button
-                type="button"
-                onClick={openDeleteDialog}
-                className="rounded-lg border border-red-300 text-red-700 hover:bg-red-50 px-4 py-2 text-sm font-medium transition dark:border-red-800 dark:text-red-300 dark:hover:bg-red-950/50"
-              >
+              <button type="button" onClick={openDeleteDialog} className={styles.ticketDetail__btnDelete}>
                 Delete
               </button>
             </>
@@ -214,10 +192,10 @@ export default function TicketDetail() {
       )}
 
       {verifyDialogOpen && ticket && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="presentation">
+        <div className={styles.ticketDetail__modalRoot} role="presentation">
           <button
             type="button"
-            className="absolute inset-0 bg-slate-900/60 dark:bg-black/70"
+            className={styles.ticketDetail__modalBackdrop}
             aria-label="Close dialog"
             onClick={closeVerifyDialog}
           />
@@ -225,25 +203,22 @@ export default function TicketDetail() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="verify-order-title"
-            className="relative z-10 w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-700 dark:bg-slate-900"
+            className={styles.ticketDetail__modalPanel}
           >
-            <h2
-              id="verify-order-title"
-              className="text-lg font-semibold text-slate-900 dark:text-white"
-            >
+            <h2 id="verify-order-title" className={styles.ticketDetail__modalTitle}>
               Verify web order
             </h2>
-            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
+            <p className={styles.ticketDetail__modalBody}>
               Type the same phone number the customer used on the web order. It must match exactly (spaces and formatting
               can differ).
             </p>
             {ticket.phone && (
-              <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+              <p className={styles.ticketDetail__modalHint}>
                 Number on this order:{' '}
-                <span className="font-mono font-medium text-slate-800 dark:text-slate-200">{ticket.phone}</span>
+                <span className={styles.ticketDetail__modalHintMono}>{ticket.phone}</span>
               </p>
             )}
-            <label htmlFor="verify-phone-input" className="sr-only">
+            <label htmlFor="verify-phone-input" className={styles.ticketDetail__srOnly}>
               Customer phone number
             </label>
             <input
@@ -253,17 +228,17 @@ export default function TicketDetail() {
               value={verifyPhoneInput}
               onChange={(e) => setVerifyPhoneInput(e.target.value)}
               placeholder="Same as on web form"
-              className="mt-4 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+              className={styles.ticketDetail__modalInput}
             />
             {verifyDialogError && (
-              <div className="mt-3">
+              <div className={styles.ticketDetail__verifyErrorWrap}>
                 <FormErrorAlert message={verifyDialogError} />
               </div>
             )}
-            <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <div className={styles.ticketDetail__modalActions}>
               <button
                 type="button"
-                className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                className={styles.ticketDetail__modalCancel}
                 onClick={closeVerifyDialog}
                 disabled={verifyLoading}
               >
@@ -271,7 +246,7 @@ export default function TicketDetail() {
               </button>
               <button
                 type="button"
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 disabled:opacity-50 dark:bg-red-700 dark:hover:bg-red-600"
+                className={styles.ticketDetail__modalConfirm}
                 onClick={submitVerifyWebOrder}
                 disabled={verifyLoading}
               >
@@ -282,243 +257,195 @@ export default function TicketDetail() {
         </div>
       )}
 
-      <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 dark:bg-slate-900 dark:border-slate-800">
+      <div className={styles.ticketDetail__card}>
         {needsWebVerify && (
-          <div className="rounded-lg border border-red-300 bg-red-50 px-3 py-2.5 text-sm text-red-900 dark:border-red-800 dark:bg-red-950/40 dark:text-red-100">
-            <strong className="font-semibold">Awaiting verification.</strong>{' '}
+          <div className={styles.ticketDetail__webBanner}>
+            <strong className={styles.ticketDetail__bannerStrong}>Awaiting verification.</strong>{' '}
             Details below are shown in red until this web order is confirmed.
           </div>
         )}
-        <dl className="grid grid-cols-1 gap-3 text-sm">
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+        <dl className={styles.ticketDetail__dl}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               City
             </dt>
             <dd
               className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 text-right dark:text-white'
+                needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd
               }
             >
               {ticket.city || '—'}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Concert date
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 text-right dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd}
             >
               {getEventDateForCity(ticket.city) || '—'}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Time
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 text-right dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd}
             >
               {getEventTimeForCity(ticket.city) || '—'}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Venue
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 text-right dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd}
             >
               {getVenueForCity(ticket.city) || '—'}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Phone
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 text-right dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd}
             >
               {ticket.phone || '—'}
             </dd>
           </div>
           {ticket.submissionSource === 'public' && (
-            <div className="flex justify-between gap-4">
-              <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+            <div className={styles.ticketDetail__row}>
+              <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
                 Phone contact consent
               </dt>
               <dd
-                className={
-                  needsWebVerify
-                    ? 'text-red-800 text-right font-medium dark:text-red-200'
-                    : 'text-slate-900 text-right dark:text-white'
-                }
+                className={needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd}
               >
                 {ticket.phoneContactConsent ? 'Yes' : 'No'}
               </dd>
             </div>
           )}
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Order source
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 text-right dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd}
             >
               {labelSubmissionSource(ticket.submissionSource)}
             </dd>
           </div>
           {ticket.submissionSource === 'public' && ticket.verifiedAt && (
-            <div className="flex justify-between gap-4">
-              <dt className="text-slate-500 dark:text-slate-500">Verified</dt>
-              <dd className="text-slate-900 text-right dark:text-white">
+            <div className={styles.ticketDetail__row}>
+              <dt className={styles.ticketDetail__dt}>Verified</dt>
+              <dd className={styles.ticketDetail__dd}>
                 {ticket.verifiedBy ? `${ticket.verifiedBy} · ` : ''}
                 {new Date(ticket.verifiedAt).toLocaleString()}
               </dd>
             </div>
           )}
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Ticket type
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 text-right dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd}
             >
               {ticket.ticketType}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Attendance
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddBlockDanger : styles.ticketDetail__ddBlock}
             >
-              <span className="block">
+              <span className={styles.ticketDetail__attendanceLine}>
                 Adults {ticket.countAdults ?? 0}, student {ticket.countStudent ?? 0}, child {ticket.countChild ?? 0}
               </span>
-              <span className="block text-xs font-normal text-slate-600 dark:text-slate-400 mt-0.5">
+              <span className={styles.ticketDetail__attendanceSub}>
                 Total attendance: {ticket.ticketCount ?? 0}
               </span>
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Price (SEK)
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddBlockDanger : styles.ticketDetail__ddBlock}
             >
               {formatSek(ticket.price)}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Sold by
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddBlockDanger : styles.ticketDetail__ddBlock}
             >
               {ticket.soldBy}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Paid
             </dt>
             <dd
               className={
                 needsWebVerify
                   ? Boolean(ticket.paid)
-                    ? 'text-red-800 font-medium dark:text-red-200'
-                    : 'text-red-700 dark:text-red-300'
+                    ? styles.ticketDetail__paidYesDanger
+                    : styles.ticketDetail__paidNoDanger
                   : Boolean(ticket.paid)
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : 'text-amber-600 dark:text-amber-400'
+                    ? styles.ticketDetail__paidYesOk
+                    : styles.ticketDetail__paidNoOk
               }
             >
               {Boolean(ticket.paid) ? 'Yes' : 'No'}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Payment to
             </dt>
             <dd
-              className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-900 text-right dark:text-white'
-              }
+              className={needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__dd}
             >
               {Boolean(ticket.paid) ? labelForPaidTo(ticket.paidTo) : '—'}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Checked in
             </dt>
             <dd
               className={
                 needsWebVerify
                   ? ticket.checkedIn
-                    ? 'text-red-800 font-medium dark:text-red-200'
-                    : 'text-red-700 dark:text-red-300'
+                    ? styles.ticketDetail__checkYesDanger
+                    : styles.ticketDetail__checkNoDanger
                   : ticket.checkedIn
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : 'text-amber-600 dark:text-amber-400'
+                    ? styles.ticketDetail__checkYesOk
+                    : styles.ticketDetail__checkNoOk
               }
             >
               {ticket.checkedIn ? 'Yes' : 'No'}
             </dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt className={needsWebVerify ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-500'}>
+          <div className={styles.ticketDetail__row}>
+            <dt className={needsWebVerify ? styles.ticketDetail__dtDanger : styles.ticketDetail__dt}>
               Created
             </dt>
             <dd
               className={
-                needsWebVerify
-                  ? 'text-red-800 text-right font-medium dark:text-red-200'
-                  : 'text-slate-700 text-right dark:text-slate-300'
+                needsWebVerify ? styles.ticketDetail__ddDanger : styles.ticketDetail__ddCreated
               }
             >
               {ticket.createdAt
@@ -529,16 +456,14 @@ export default function TicketDetail() {
         </dl>
 
         {qrSrc && (
-          <div className="pt-4 border-t border-slate-200 flex flex-col items-center dark:border-slate-800">
-            <p className="text-slate-600 dark:text-slate-400 text-sm mb-3">Entry QR code</p>
+          <div className={styles.ticketDetail__qrSection}>
+            <p className={styles.ticketDetail__qrCaption}>Entry QR code</p>
             <img
               src={qrSrc}
               alt={`QR for ${ticket.ticketCode}`}
-              className="w-56 h-56 bg-white rounded-lg p-2"
+              className={styles.ticketDetail__qrImg}
             />
-            <p className="text-xs text-slate-500 dark:text-slate-500 mt-2 font-mono">
-              Encodes: {ticket.ticketCode}
-            </p>
+            <p className={styles.ticketDetail__qrCodeNote}>Encodes: {ticket.ticketCode}</p>
           </div>
         )}
       </div>

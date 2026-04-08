@@ -1,4 +1,4 @@
-import { PAYMENT_LABEL_PAID_TO_ORG_ACCOUNT } from '../config/eventConfig.js';
+import { PAYMENT_LABEL_PAID_TO_ORG_ACCOUNT } from '@src/config/eventConfig.js';
 
 /** Keep `value` in sync with backend ENUM `paid_to` on tickets. */
 export const PAID_TO_SELLER = 'seller';

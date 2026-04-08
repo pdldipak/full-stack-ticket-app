@@ -5,6 +5,7 @@ function mapTicketRow(row) {
   if (!row) return null;
   return {
     ...row,
+    price: row.price != null ? Number(row.price) : 0,
     checkedIn: Boolean(row.checkedIn),
     paid: Boolean(row.paid),
     paidTo: row.paidTo ?? null,

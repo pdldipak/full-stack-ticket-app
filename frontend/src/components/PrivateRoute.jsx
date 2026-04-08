@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.jsx';
+import { useAuth } from '@src/context/AuthContext.jsx';
 
 export default function PrivateRoute({ children, allowedRoles }) {
   const { isAuthenticated, role } = useAuth();

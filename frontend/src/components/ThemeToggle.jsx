@@ -1,4 +1,5 @@
-import { useTheme } from '../context/ThemeContext.jsx';
+import { useTheme } from '@src/context/ThemeContext.jsx';
+import styles from './ThemeToggle.module.css';
 
 function IconSun({ className }) {
   return (
@@ -32,19 +33,19 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+      className={styles.themeToggle__button}
       aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
       title={isDark ? 'Light mode' : 'Dark mode'}
     >
       {isDark ? (
         <>
-          <IconSun className="h-4 w-4 text-amber-500" />
-          <span className="hidden sm:inline">Light</span>
+          <IconSun className={styles.themeToggle__iconSun} />
+          <span className={styles.themeToggle__label}>Light</span>
         </>
       ) : (
         <>
-          <IconMoon className="h-4 w-4 text-slate-600" />
-          <span className="hidden sm:inline">Dark</span>
+          <IconMoon className={styles.themeToggle__iconMoon} />
+          <span className={styles.themeToggle__label}>Dark</span>
         </>
       )}
     </button>

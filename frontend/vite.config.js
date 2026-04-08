@@ -1,8 +1,27 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const srcDir = resolve(__dirname, 'src');
 
 export default defineConfig({
   plugins: [react()],
+  /**
+   * CSS Modules: emitted class name = local name in the file (e.g. themeToggle__iconMoon).
+   * Keep BEM block prefixes unique across all *.module.css files to avoid collisions.
+   */
+  css: {
+    modules: {
+      generateScopedName: (name) => name,
+    },
+  },
+  resolve: {
+    alias: {
+      '@src': srcDir,
+    },
+  },
   build: {
     sourcemap: false,
     cssCodeSplit: true, // Split CSS to reduce memory load

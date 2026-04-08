@@ -1,0 +1,64 @@
+/** Block: message-dialog */
+.messageDialog__root {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+}
+
+.messageDialog__scrimDefault {
+  @apply absolute inset-0 bg-slate-900/60 dark:bg-black/70;
+}
+
+.messageDialog__scrimSuccess {
+  @apply absolute inset-0 bg-slate-900/55 backdrop-blur-[2px] dark:bg-emerald-950/60;
+}
+
+.messageDialog__panel {
+  @apply relative z-10 w-full max-w-md overflow-hidden rounded-xl p-6;
+}
+
+.messageDialog__panelDefault {
+  @apply border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900 shadow-xl;
+}
+
+.messageDialog__panelSuccess {
+  @apply border-2 border-emerald-500 bg-gradient-to-br from-white via-emerald-50/90 to-teal-50/80 shadow-2xl shadow-emerald-600/25 ring-2 ring-emerald-400/35 dark:border-emerald-400 dark:from-slate-900 dark:via-emerald-950/50 dark:to-slate-900 dark:shadow-emerald-950/40 dark:ring-emerald-500/25;
+}
+
+.messageDialog__accent {
+  @apply pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500;
+}
+
+.messageDialog__title {
+  @apply text-lg font-semibold leading-snug tracking-tight;
+}
+
+.messageDialog__titleDefault {
+  @apply text-slate-900 dark:text-white;
+}
+
+.messageDialog__titleSuccess {
+  @apply text-emerald-900 dark:text-emerald-50 [text-shadow:0_1px_0_rgba(255,255,255,0.4)] dark:[text-shadow:0_1px_2px_rgba(0,0,0,0.9)];
+}
+
+.messageDialog__body {
+  @apply mt-4 space-y-3 text-sm font-normal leading-relaxed;
+}
+
+.messageDialog__bodyDefault {
+  @apply text-slate-700 dark:text-slate-300;
+}
+
+.messageDialog__bodySuccess {
+  @apply text-emerald-950/90 dark:text-emerald-100/95;
+}
+
+.messageDialog__footer {
+  @apply mt-6 flex justify-end;
+}
+
+.messageDialog__btnDefault {
+  @apply rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 dark:bg-emerald-600 dark:hover:bg-emerald-500;
+}
+
+.messageDialog__btnSuccess {
+  @apply rounded-lg bg-gradient-to-b from-emerald-500 to-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-emerald-900/30 transition hover:from-emerald-400 hover:to-emerald-500 active:scale-[0.99] dark:from-emerald-600 dark:to-emerald-700 dark:hover:from-emerald-500 dark:hover:to-emerald-600;
+}

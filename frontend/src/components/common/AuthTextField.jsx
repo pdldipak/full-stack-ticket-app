@@ -1,10 +1,5 @@
-import { IconLock, IconUser } from './icons.jsx';
-
-const inputClass =
-  'w-full rounded-xl border pl-11 pr-3.5 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition shadow-inner bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 dark:bg-slate-950/50 dark:border-slate-600/80 dark:text-white dark:placeholder:text-slate-600';
-
-const labelClass =
-  'block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300';
+import { IconLock, IconUser } from '@src/components/common/icons.jsx';
+import styles from './AuthTextField.module.css';
 
 export default function AuthTextField({
   id,
@@ -19,12 +14,12 @@ export default function AuthTextField({
   const Icon = icon === 'lock' ? IconLock : IconUser;
 
   return (
-    <div className="space-y-2">
-      <label htmlFor={id} className={labelClass}>
+    <div className={styles.authTextField}>
+      <label htmlFor={id} className={styles.authTextField__label}>
         {label}
       </label>
-      <div className="relative">
-        <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">
+      <div className={styles.authTextField__wrap}>
+        <span className={styles.authTextField__iconSlot}>
           <Icon />
         </span>
         <input
@@ -33,7 +28,7 @@ export default function AuthTextField({
           autoComplete={autoComplete}
           value={value}
           onChange={onChange}
-          className={inputClass}
+          className={styles.authTextField__input}
           placeholder={placeholder}
           required
         />

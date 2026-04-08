@@ -1,0 +1,84 @@
+/** Block: event-branding */
+.eventBranding__compact {
+  @apply text-sm leading-relaxed text-slate-600 dark:text-slate-500;
+}
+
+.eventBranding__compactOrg {
+  @apply text-slate-700 dark:text-slate-400;
+}
+
+.eventBranding__stack {
+  @apply text-center space-y-2;
+}
+
+.eventBranding__organizerProminentHero {
+  @apply text-xl sm:text-2xl font-bold tracking-tight text-emerald-800 drop-shadow-sm dark:text-emerald-200 dark:drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)];
+}
+
+.eventBranding__organizerHero {
+  @apply text-xs font-semibold uppercase tracking-wide text-emerald-700 drop-shadow-sm dark:text-emerald-300 dark:drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)];
+}
+
+.eventBranding__organizerPlain {
+  @apply text-emerald-700 dark:text-emerald-400/90 text-xs font-semibold tracking-wide uppercase;
+}
+
+.eventBranding__presentHero {
+  @apply text-xs text-slate-600 dark:text-slate-300 dark:drop-shadow-sm;
+}
+
+.eventBranding__presentPlain {
+  @apply text-slate-600 dark:text-slate-500 text-xs;
+}
+
+.eventBranding__titleHero {
+  @apply text-xl font-bold leading-snug text-slate-900 sm:text-2xl dark:text-white dark:[text-shadow:0_2px_12px_rgba(0,0,0,0.85),0_1px_2px_rgba(0,0,0,0.9)];
+}
+
+.eventBranding__titlePlain {
+  @apply text-xl sm:text-2xl font-bold text-slate-900 dark:text-white leading-snug;
+}
+
+.eventBranding__titleSepHero {
+  @apply font-normal text-slate-600 dark:text-slate-200;
+}
+
+.eventBranding__titleSepPlain {
+  @apply text-slate-600 dark:text-slate-300 font-normal;
+}
+
+.eventBranding__artistHero {
+  @apply text-slate-800 dark:text-white;
+}
+
+.eventBranding__artistPlain {
+  @apply text-slate-800 dark:text-slate-100;
+}
+
+.eventBranding__cityListHero {
+  @apply mx-auto max-w-md space-y-2 pt-1 text-center text-base sm:text-lg text-slate-700 dark:text-slate-200 dark:[text-shadow:0_1px_4px_rgba(0,0,0,0.85)];
+}
+
+.eventBranding__cityListPlain {
+  @apply text-slate-600 dark:text-slate-400 text-base sm:text-lg space-y-2 pt-1 text-center max-w-md mx-auto;
+}
+
+.eventBranding__cityNameHero {
+  @apply font-medium text-slate-900 dark:text-white;
+}
+
+.eventBranding__cityNamePlain {
+  @apply text-slate-800 dark:text-slate-300 font-medium;
+}
+
+.eventBranding__venueHero {
+  @apply text-slate-600 dark:text-slate-300;
+}
+
+.eventBranding__venuePlain {
+  @apply text-slate-500 dark:text-slate-500;
+}
+
+.eventBranding__heroCard {
+  @apply rounded-2xl border border-slate-200/90 bg-white/90 px-4 py-5 shadow-xl shadow-slate-900/10 ring-1 ring-slate-200/70 backdrop-blur-md sm:px-5 dark:border-white/20 dark:bg-slate-950/75 dark:shadow-2xl dark:ring-black/50 dark:ring-white/10;
+}

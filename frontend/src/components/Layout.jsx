@@ -1,15 +1,12 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { getSiteHeaderTitle } from '../config/eventConfig.js';
-import { useAuth } from '../context/AuthContext.jsx';
-import EventBranding from './EventBranding.jsx';
-import ThemeToggle from './ThemeToggle.jsx';
+import { getSiteHeaderTitle } from '@src/config/eventConfig.js';
+import { useAuth } from '@src/context/AuthContext.jsx';
+import EventBranding from '@src/components/EventBranding.jsx';
+import styles from '@src/components/Layout.module.css';
+import ThemeToggle from '@src/components/ThemeToggle.jsx';
 
 const navClass = ({ isActive }) =>
-  `px-3 py-2 rounded-md text-sm font-medium transition ${
-    isActive
-      ? 'bg-emerald-600 text-white'
-      : 'text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-800'
-  }`;
+  `${styles.layout__navLink} ${isActive ? styles.layout__navLink_active : styles.layout__navLink_inactive}`;
 
 export default function Layout({ children }) {
   const { username, role, logout } = useAuth();
@@ -21,21 +18,21 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
-      <header className="border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-          <div className="min-w-0">
-            <Link
-              to="/"
-              className="text-lg font-semibold text-slate-900 dark:text-white block truncate"
-            >
+    <div className={styles.layout__root}>
+      <a href="#main-content" className={styles.layout__skipLink}>
+        Skip to content
+      </a>
+      <header className={styles.layout__header}>
+        <div className={styles.layout__inner}>
+          <div className={styles.layout__brandCol}>
+            <Link to="/" className={styles.layout__siteTitle}>
               {getSiteHeaderTitle()}
             </Link>
-            <div className="mt-1 hidden sm:block max-w-xl">
+            <div className={styles.layout__compactBranding}>
               <EventBranding compact />
             </div>
           </div>
-          <nav className="flex flex-wrap items-center gap-2">
+          <nav className={styles.layout__nav}>
             {(role === 'seller' || role === 'admin') && (
               <>
                 <NavLink to="/tickets" className={navClass}>
@@ -52,20 +49,18 @@ export default function Layout({ children }) {
               </NavLink>
             )}
           </nav>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+          <div className={styles.layout__toolbar}>
             <ThemeToggle />
             <span>{username}</span>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
-            >
+            <button type="button" onClick={handleLogout} className={styles.layout__logout}>
               Log out
             </button>
           </div>
         </div>
       </header>
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-8">{children}</main>
+      <main id="main-content" className={styles.layout__main} tabIndex={-1}>
+        {children}
+      </main>
     </div>
   );
 }

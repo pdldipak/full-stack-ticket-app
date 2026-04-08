@@ -1,14 +1,15 @@
-import ThemeToggle from '../ThemeToggle.jsx';
-import LoginPageBackground from './LoginPageBackground.jsx';
+import ThemeToggle from '@src/components/ThemeToggle.jsx';
+import LoginPageBackground from '@src/components/common/LoginPageBackground.jsx';
+import styles from './AuthShell.module.css';
 
 export default function AuthShell({ children }) {
   return (
-    <div className="relative min-h-screen w-full flex flex-col justify-center px-4 py-12 bg-slate-100 dark:bg-slate-950 isolate">
+    <div className={styles.authShell}>
       <LoginPageBackground />
-      <div className="absolute right-4 top-4 z-[2]">
+      <div className={styles.authShell__toggle}>
         <ThemeToggle />
       </div>
-      <div className="relative z-[1] mx-auto w-full max-w-md min-w-0 space-y-7">{children}</div>
+      <div className={styles.authShell__content}>{children}</div>
     </div>
   );
 }

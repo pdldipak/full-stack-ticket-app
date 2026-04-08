@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Navigate, useNavigate, useLocation } from 'react-router-dom';
-import api from '../api/client.js';
-import { useAuth } from '../context/AuthContext.jsx';
-import EventBranding from '../components/EventBranding.jsx';
+import api from '@src/api/client.js';
+import { useAuth } from '@src/context/AuthContext.jsx';
+import EventBranding from '@src/components/EventBranding.jsx';
 import {
   AuthAlternateLink,
   AuthFormCard,
@@ -12,9 +12,10 @@ import {
   FormErrorAlert,
   HeroSubtitle,
   PrimaryGradientButton,
-} from '../components/common';
-import { LOGIN_ORDER_LINK_TEXT } from '../config/eventConfig.js';
-import { getApiErrorMessage } from '../utils/apiError.js';
+} from '@src/components/common';
+import { LOGIN_ORDER_LINK_TEXT } from '@src/config/eventConfig.js';
+import { getApiErrorMessage } from '@src/utils/apiError.js';
+import styles from '@src/pages/Login.module.css';
 
 export default function Login() {
   const { login, isAuthenticated, role } = useAuth();
@@ -58,7 +59,7 @@ export default function Login() {
 
   return (
     <AuthShell>
-      <div className="space-y-5">
+      <div className={styles.login__heroStack}>
         <EventBranding forHero />
         <AuthAlternateLink to="/order" variant="red">
           {LOGIN_ORDER_LINK_TEXT}

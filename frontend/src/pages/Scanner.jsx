@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Html5Qrcode } from 'html5-qrcode';
-import api from '../api/client.js';
-import { formatSek } from '../utils/formatCurrency.js';
-import { getTicketCodeExample } from '../config/eventConfig.js';
+import api from '@src/api/client.js';
+import { formatSek } from '@src/utils/formatCurrency.js';
+import { getTicketCodeExample } from '@src/config/eventConfig.js';
+import styles from '@src/pages/Scanner.module.css';
 
 const SCANNER_ID = 'scanner-viewport';
 
@@ -13,24 +14,24 @@ const SCANNER_ID = 'scanner-viewport';
 function ScannerResultPanel({ message, onDismiss, closeButtonRef }) {
   const { type, text, detail } = message;
 
-  const shell =
+  const shellClass =
     type === 'success'
-      ? 'border-2 border-emerald-500/90 bg-gradient-to-b from-emerald-950/90 to-neutral-950 shadow-xl shadow-emerald-950/40'
+      ? styles.scannerResult__shellSuccess
       : type === 'warning'
-        ? 'border-2 border-amber-500/90 bg-gradient-to-b from-amber-950/80 to-neutral-950 shadow-xl shadow-amber-950/30'
+        ? styles.scannerResult__shellWarn
         : detail
-          ? 'border-2 border-red-500/90 bg-gradient-to-b from-red-950/85 to-[#120809] shadow-xl shadow-red-950/50'
-          : 'border border-red-300/80 bg-red-50 text-red-950 dark:border-red-700 dark:bg-red-950/40 dark:text-red-100';
+          ? styles.scannerResult__shellErrorDetail
+          : styles.scannerResult__shellErrorSimple;
 
   if (!detail) {
     return (
-      <div className={`rounded-xl px-4 py-3 text-sm ${shell}`}>
-        <p className="font-medium">{text}</p>
+      <div className={`${styles.scannerResult__simpleInner} ${shellClass}`}>
+        <p className={styles.scannerResult__simpleText}>{text}</p>
         <button
           ref={closeButtonRef}
           type="button"
           onClick={onDismiss}
-          className="mt-3 rounded-lg border border-red-800/30 bg-red-900/10 px-3 py-1.5 text-xs font-medium text-red-900 hover:bg-red-900/20 dark:border-white/20 dark:bg-white/10 dark:text-red-100 dark:hover:bg-white/15"
+          className={styles.scannerResult__dismissBtn}
         >
           Dismiss
         </button>
@@ -38,64 +39,59 @@ function ScannerResultPanel({ message, onDismiss, closeButtonRef }) {
     );
   }
 
-  const dtClass = 'text-slate-400 text-sm';
-  const ddClass = 'text-sm font-medium text-white text-right tabular-nums';
-
   return (
-    <div className={`rounded-xl p-5 text-sm text-white ${shell}`}>
-      <p id="scanner-result-title" className="text-[15px] font-semibold leading-snug text-white">
+    <div className={`${styles.scannerResult__detailWrap} ${shellClass}`}>
+      <p id="scanner-result-title" className={styles.scannerResult__detailTitle}>
         {text}
       </p>
-      <div className="my-4 border-t border-slate-500/40" />
-      <p className="mb-4 font-mono text-xs tracking-wide text-slate-400">{detail.ticketCode}</p>
-      <dl className="space-y-2.5">
-        <div className="flex justify-between gap-6">
-          <dt className={dtClass}>Name</dt>
-          <dd className={`${ddClass} max-w-[60%]`}>{detail.fullName || '—'}</dd>
+      <div className={styles.scannerResult__divider} />
+      <p className={styles.scannerResult__codeLine}>{detail.ticketCode}</p>
+      <dl className={styles.scannerResult__dl}>
+        <div className={styles.scannerResult__row}>
+          <dt className={styles.scannerResult__dt}>Name</dt>
+          <dd className={styles.scannerResult__ddNarrow}>{detail.fullName || '—'}</dd>
         </div>
-        <div className="flex justify-between gap-6">
-          <dt className={dtClass}>Adults</dt>
-          <dd className={ddClass}>{detail.countAdults ?? 0}</dd>
+        <div className={styles.scannerResult__row}>
+          <dt className={styles.scannerResult__dt}>Adults</dt>
+          <dd className={styles.scannerResult__dd}>{detail.countAdults ?? 0}</dd>
         </div>
-        <div className="flex justify-between gap-6">
-          <dt className={dtClass}>Student</dt>
-          <dd className={ddClass}>{detail.countStudent ?? 0}</dd>
+        <div className={styles.scannerResult__row}>
+          <dt className={styles.scannerResult__dt}>Student</dt>
+          <dd className={styles.scannerResult__dd}>{detail.countStudent ?? 0}</dd>
         </div>
-        <div className="flex justify-between gap-6">
-          <dt className={dtClass}>Child</dt>
-          <dd className={ddClass}>{detail.countChild ?? 0}</dd>
+        <div className={styles.scannerResult__row}>
+          <dt className={styles.scannerResult__dt}>Child</dt>
+          <dd className={styles.scannerResult__dd}>{detail.countChild ?? 0}</dd>
         </div>
-        <div className="flex justify-between gap-6">
-          <dt className={dtClass}>Total attendance</dt>
-          <dd className={ddClass}>{detail.ticketCount != null ? detail.ticketCount : '—'}</dd>
+        <div className={styles.scannerResult__row}>
+          <dt className={styles.scannerResult__dt}>Total attendance</dt>
+          <dd className={styles.scannerResult__dd}>{detail.ticketCount != null ? detail.ticketCount : '—'}</dd>
         </div>
-        <div className="flex justify-between gap-6">
-          <dt className={dtClass}>Marked paid</dt>
+        <div className={styles.scannerResult__row}>
+          <dt className={styles.scannerResult__dt}>Marked paid</dt>
           <dd
-            className={`text-right text-sm font-semibold tabular-nums ${
-              detail.paid ? 'text-emerald-400' : 'text-amber-400'
-            }`}
+            className={detail.paid ? styles.scannerResult__paidYes : styles.scannerResult__paidNo}
           >
             {detail.paid ? 'Yes' : 'No'}
           </dd>
         </div>
-        <div className="flex justify-between gap-6">
-          <dt className={dtClass}>Amount (SEK)</dt>
-          <dd className={ddClass}>{formatSek(detail.price)}</dd>
+        <div className={styles.scannerResult__row}>
+          <dt className={styles.scannerResult__dt}>Amount (SEK)</dt>
+          <dd className={styles.scannerResult__dd}>{formatSek(detail.price)}</dd>
         </div>
       </dl>
-      <div className="mt-5 flex justify-end">
+      <div className={styles.scannerResult__okRow}>
         <button
           ref={closeButtonRef}
           type="button"
           onClick={onDismiss}
-          className={`rounded-lg px-8 py-2.5 text-sm font-semibold transition ${
+          className={
             type === 'success'
-              ? 'bg-emerald-600 text-white hover:bg-emerald-500'
+              ? styles.scannerResult__okBtnSuccess
               : type === 'warning'
-                ? 'bg-amber-600 text-white hover:bg-amber-500'
-                : 'bg-red-700 text-white hover:bg-red-600'
-          }`}
+                ? styles.scannerResult__okBtnWarn
+                : styles.scannerResult__okBtnError
+          }
         >
           OK
         </button>
@@ -129,18 +125,15 @@ function ScannerResultModal({ message, onDismiss }) {
   }, [onDismiss]);
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
-      role="presentation"
-    >
+    <div className={styles.scannerModal__root} role="presentation">
       <button
         type="button"
-        className="absolute inset-0 bg-black/65 backdrop-blur-[2px] dark:bg-black/70"
+        className={styles.scannerModal__backdrop}
         aria-label="Close dialog"
         onClick={onDismiss}
       />
       <div
-        className="relative z-[201] w-full max-w-lg max-h-[min(90vh,640px)] overflow-y-auto shadow-2xl"
+        className={styles.scannerModal__panel}
         role="dialog"
         aria-modal="true"
         aria-labelledby="scanner-result-title"
@@ -275,68 +268,59 @@ export default function Scanner() {
   const dismissMessage = () => setMessage(null);
 
   return (
-    <div className="max-w-xl mx-auto space-y-6">
+    <div className={styles.scanner__page}>
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Entry scanner</h1>
-        <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
+        <h1 className={styles.scanner__title}>Entry scanner</h1>
+        <p className={styles.scanner__intro}>
           Scan a ticket QR code or enter the ticket code manually. Only tickets marked{' '}
-          <strong className="text-slate-800 dark:text-slate-200">paid</strong> in the portal can be checked in; unpaid
+          <strong className={styles.scanner__introStrong}>paid</strong> in the portal can be checked in; unpaid
           tickets are rejected.
         </p>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-slate-100 overflow-hidden dark:border-slate-800 dark:bg-slate-900/50">
-        <div
-          id={SCANNER_ID}
-          className="min-h-[280px] w-full bg-black flex items-center justify-center text-slate-400 text-sm dark:text-slate-500"
-        >
+      <div className={styles.scanner__viewportWrap}>
+        <div id={SCANNER_ID} className={styles.scanner__viewport}>
           {!running && 'Camera preview appears here when started.'}
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      <div className={styles.scanner__btnRow}>
         {!running ? (
           <button
             type="button"
             onClick={startScanner}
             disabled={checking}
-            className="rounded-lg bg-emerald-600 hover:bg-emerald-500 px-4 py-2 text-white font-medium disabled:opacity-50"
+            className={styles.scanner__btnStart}
           >
             Open camera &amp; scan
           </button>
         ) : (
-          <button
-            type="button"
-            onClick={stopScanner}
-            className="rounded-lg bg-slate-600 hover:bg-slate-500 px-4 py-2 text-white font-medium dark:bg-slate-700 dark:hover:bg-slate-600"
-          >
+          <button type="button" onClick={stopScanner} className={styles.scanner__btnStop}>
             Stop camera
           </button>
         )}
       </div>
 
-      <form onSubmit={handleManual} className="space-y-2">
-        <label className="block text-sm text-slate-600 dark:text-slate-400">Manual ticket code</label>
-        <div className="flex gap-2">
+      <form onSubmit={handleManual} className={styles.scanner__manualForm}>
+        <label className={styles.scanner__manualLabel}>Manual ticket code</label>
+        <div className={styles.scanner__manualRow}>
           <input
             value={manualCode}
             onChange={(e) => setManualCode(e.target.value)}
             placeholder={getTicketCodeExample()}
-            className="flex-1 rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 font-mono focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+            className={styles.scanner__manualInput}
           />
           <button
             type="submit"
             disabled={checking || !manualCode.trim()}
-            className="rounded-lg bg-slate-600 hover:bg-slate-500 px-4 py-2 text-white disabled:opacity-50 dark:bg-slate-700 dark:hover:bg-slate-600"
+            className={styles.scanner__manualSubmit}
           >
             Verify
           </button>
         </div>
       </form>
 
-      {checking && (
-        <p className="text-slate-600 dark:text-slate-400 text-sm">Verifying…</p>
-      )}
+      {checking && <p className={styles.scanner__verifying}>Verifying…</p>}
 
       {message && <ScannerResultModal message={message} onDismiss={dismissMessage} />}
     </div>

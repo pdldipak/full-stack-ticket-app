@@ -1,5 +1,14 @@
+import {
+  ORDER_ADULT_PRICE_SEK,
+  ORDER_CHILD_PRICE_SEK,
+  ORDER_STUDENT_PRICE_SEK,
+  computeOrderTotalSek,
+} from '@src/constants/orderPricing.js';
+import styles from './AttendanceFields.module.css';
+
 /**
  * Adults / student / child counts; total attendance is the sum (shown read-only).
+ * Styles: BEM in AttendanceFields.module.css (block: attendance-fields).
  */
 export default function AttendanceFields({
   countAdults,
@@ -10,29 +19,26 @@ export default function AttendanceFields({
   onChangeChild,
   idPrefix = 'att',
   disabled = false,
+  /** When true, show public order pricing (matches backend `orderPricing.js`). */
+  showOrderPricing = false,
 }) {
   const a = Number(countAdults) || 0;
   const s = Number(countStudent) || 0;
   const c = Number(countChild) || 0;
   const total = a + s + c;
-
-  const inputClass =
-    'w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white disabled:opacity-60';
+  const totalCostSek = showOrderPricing ? computeOrderTotalSek(a, s, c) : null;
 
   return (
-    <fieldset className="rounded-lg border border-slate-200 bg-slate-50/80 p-4 space-y-3 dark:border-slate-700 dark:bg-slate-800/40">
-      <legend className="text-sm font-medium text-slate-800 dark:text-slate-200 px-1">
-        Attendance <span className="text-red-600 dark:text-red-400">*</span>
+    <fieldset className={styles.attendanceFields}>
+      <legend className={styles.attendanceFields__legend}>
+        Attendance <span className={styles.attendanceFields__legendRequired}>*</span>
       </legend>
-      <p className="text-xs text-slate-600 dark:text-slate-400">
+      <p className={styles.attendanceFields__hint}>
         Adults, student, and children. At least one person total. Total attendance is the sum of the three.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className={styles.attendanceFields__grid}>
         <div>
-          <label
-            htmlFor={`${idPrefix}-adults`}
-            className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-          >
+          <label htmlFor={`${idPrefix}-adults`} className={styles.attendanceFields__label}>
             Adults
           </label>
           <input
@@ -44,14 +50,11 @@ export default function AttendanceFields({
             disabled={disabled}
             value={countAdults}
             onChange={onChangeAdults}
-            className={inputClass}
+            className={styles.attendanceFields__input}
           />
         </div>
         <div>
-          <label
-            htmlFor={`${idPrefix}-student`}
-            className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-          >
+          <label htmlFor={`${idPrefix}-student`} className={styles.attendanceFields__label}>
             Student
           </label>
           <input
@@ -63,14 +66,11 @@ export default function AttendanceFields({
             disabled={disabled}
             value={countStudent}
             onChange={onChangeStudent}
-            className={inputClass}
+            className={styles.attendanceFields__input}
           />
         </div>
         <div>
-          <label
-            htmlFor={`${idPrefix}-child`}
-            className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-          >
+          <label htmlFor={`${idPrefix}-child`} className={styles.attendanceFields__label}>
             Child
           </label>
           <input
@@ -82,14 +82,26 @@ export default function AttendanceFields({
             disabled={disabled}
             value={countChild}
             onChange={onChangeChild}
-            className={inputClass}
+            className={styles.attendanceFields__input}
           />
         </div>
       </div>
-      <p className="text-sm text-slate-700 dark:text-slate-300">
+      <p className={styles.attendanceFields__summary}>
         Total attendance:{' '}
-        <span className="font-semibold tabular-nums text-slate-900 dark:text-white">{total}</span>
+        <span className={styles.attendanceFields__summaryStrong}>{total}</span>
       </p>
+      {showOrderPricing && totalCostSek != null && (
+        <>
+          <p className={styles.attendanceFields__pricingLine}>
+            Total cost:{' '}
+            <span className={styles.attendanceFields__summaryStrong}>{totalCostSek} kr</span>
+          </p>
+          <p className={styles.attendanceFields__pricingHint}>
+            {ORDER_ADULT_PRICE_SEK} kr per adult · {ORDER_STUDENT_PRICE_SEK} kr per student ·{' '}
+            {ORDER_CHILD_PRICE_SEK === 0 ? 'children free' : `${ORDER_CHILD_PRICE_SEK} kr per child`}
+          </p>
+        </>
+      )}
     </fieldset>
   );
 }

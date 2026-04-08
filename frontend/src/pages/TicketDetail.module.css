@@ -1,0 +1,232 @@
+/** Block: ticket-detail */
+.ticketDetail__loading {
+  @apply py-12 text-center text-base leading-relaxed text-slate-500 dark:text-slate-400;
+}
+
+.ticketDetail__errorStack {
+  @apply space-y-4;
+}
+
+.ticketDetail__link {
+  @apply text-sm font-medium leading-normal text-emerald-600 hover:underline dark:text-emerald-400;
+}
+
+.ticketDetail__page {
+  @apply max-w-lg mx-auto space-y-6;
+}
+
+.ticketDetail__headerRow {
+  @apply flex justify-between items-start gap-4;
+}
+
+.ticketDetail__titleOk {
+  @apply font-mono text-xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-2xl;
+}
+
+.ticketDetail__titleWarn {
+  @apply font-mono text-xl font-bold tracking-tight text-red-700 dark:text-red-300 sm:text-2xl;
+}
+
+.ticketDetail__org {
+  @apply mt-1 text-sm leading-snug text-slate-500 dark:text-slate-500;
+}
+
+.ticketDetail__eventLine {
+  @apply mt-0.5 text-sm leading-snug text-slate-600 dark:text-slate-400;
+}
+
+.ticketDetail__nameOk {
+  @apply mt-1 text-base leading-relaxed text-slate-600 dark:text-slate-400;
+}
+
+.ticketDetail__nameWarn {
+  @apply mt-1 text-base font-medium leading-relaxed text-red-700 dark:text-red-300;
+}
+
+.ticketDetail__verifyBanner {
+  @apply mt-1.5 text-sm leading-relaxed text-red-700 dark:text-red-300;
+}
+
+.ticketDetail__headerLink {
+  @apply shrink-0 text-sm font-medium leading-snug text-emerald-600 hover:underline dark:text-emerald-400;
+}
+
+.ticketDetail__actions {
+  @apply flex flex-wrap gap-2;
+}
+
+.ticketDetail__btnVerify {
+  @apply rounded-lg bg-red-600 hover:bg-red-500 px-4 py-2 text-sm font-medium text-white transition disabled:opacity-50;
+}
+
+.ticketDetail__btnEdit {
+  @apply rounded-lg bg-emerald-600 hover:bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition;
+}
+
+.ticketDetail__btnDelete {
+  @apply rounded-lg border border-red-300 text-red-700 hover:bg-red-50 px-4 py-2 text-sm font-medium transition dark:border-red-800 dark:text-red-300 dark:hover:bg-red-950/50;
+}
+
+.ticketDetail__modalRoot {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+}
+
+.ticketDetail__modalBackdrop {
+  @apply absolute inset-0 bg-slate-900/60 dark:bg-black/70;
+}
+
+.ticketDetail__modalPanel {
+  @apply relative z-10 w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-700 dark:bg-slate-900;
+}
+
+.ticketDetail__modalTitle {
+  @apply text-lg font-semibold leading-snug tracking-tight text-slate-900 dark:text-white;
+}
+
+.ticketDetail__modalBody {
+  @apply mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300;
+}
+
+.ticketDetail__modalHint {
+  @apply mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400;
+}
+
+.ticketDetail__modalHintMono {
+  @apply font-mono font-medium text-slate-800 dark:text-slate-200;
+}
+
+.ticketDetail__modalInput {
+  @apply mt-4 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base leading-normal text-slate-900 outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-600 dark:bg-slate-800 dark:text-white;
+}
+
+.ticketDetail__modalActions {
+  @apply mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end;
+}
+
+.ticketDetail__modalCancel {
+  @apply rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700;
+}
+
+.ticketDetail__modalConfirm {
+  @apply rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 disabled:opacity-50 dark:bg-red-700 dark:hover:bg-red-600;
+}
+
+.ticketDetail__card {
+  @apply bg-white border border-slate-200 rounded-xl p-6 space-y-4 dark:bg-slate-900 dark:border-slate-800;
+}
+
+.ticketDetail__webBanner {
+  @apply rounded-lg border border-red-300 bg-red-50 px-3 py-2.5 text-sm text-red-900 dark:border-red-800 dark:bg-red-950/40 dark:text-red-100;
+}
+
+.ticketDetail__dl {
+  @apply grid grid-cols-1 gap-3 text-sm leading-normal;
+}
+
+.ticketDetail__row {
+  @apply flex justify-between gap-4;
+}
+
+.ticketDetail__dt {
+  @apply text-slate-500 dark:text-slate-500;
+}
+
+.ticketDetail__dtDanger {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.ticketDetail__dd {
+  @apply text-slate-900 text-right dark:text-white;
+}
+
+.ticketDetail__ddDanger {
+  @apply text-red-800 text-right font-medium dark:text-red-200;
+}
+
+.ticketDetail__ddBlock {
+  @apply text-slate-900 dark:text-white;
+}
+
+.ticketDetail__ddBlockDanger {
+  @apply text-red-800 text-right font-medium dark:text-red-200;
+}
+
+.ticketDetail__ddMuted {
+  @apply text-slate-700 text-right dark:text-slate-300;
+}
+
+.ticketDetail__ddCreated {
+  @apply text-slate-700 text-right dark:text-slate-300;
+}
+
+.ticketDetail__attendanceBlock {
+  @apply text-slate-900 dark:text-white;
+}
+
+.ticketDetail__attendanceSub {
+  @apply block text-xs font-normal text-slate-600 dark:text-slate-400 mt-0.5;
+}
+
+.ticketDetail__paidYesOk {
+  @apply text-emerald-600 dark:text-emerald-400;
+}
+
+.ticketDetail__paidNoOk {
+  @apply text-amber-600 dark:text-amber-400;
+}
+
+.ticketDetail__paidYesDanger {
+  @apply text-red-800 font-medium dark:text-red-200;
+}
+
+.ticketDetail__paidNoDanger {
+  @apply text-red-700 dark:text-red-300;
+}
+
+.ticketDetail__checkYesOk {
+  @apply text-emerald-600 dark:text-emerald-400;
+}
+
+.ticketDetail__checkNoOk {
+  @apply text-amber-600 dark:text-amber-400;
+}
+
+.ticketDetail__checkYesDanger {
+  @apply text-red-800 font-medium dark:text-red-200;
+}
+
+.ticketDetail__checkNoDanger {
+  @apply text-red-700 dark:text-red-300;
+}
+
+.ticketDetail__qrSection {
+  @apply pt-4 border-t border-slate-200 flex flex-col items-center dark:border-slate-800;
+}
+
+.ticketDetail__qrCaption {
+  @apply mb-3 text-sm font-medium leading-snug text-slate-600 dark:text-slate-400;
+}
+
+.ticketDetail__qrImg {
+  @apply w-56 h-56 bg-white rounded-lg p-2;
+}
+
+.ticketDetail__qrCodeNote {
+  @apply mt-2 font-mono text-sm leading-normal text-slate-500 dark:text-slate-500;
+}
+
+.ticketDetail__srOnly {
+  @apply sr-only;
+}
+
+.ticketDetail__verifyErrorWrap {
+  @apply mt-3;
+}
+
+.ticketDetail__bannerStrong {
+  @apply font-semibold;
+}
+
+.ticketDetail__attendanceLine {
+  @apply block;
+}

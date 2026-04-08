@@ -1,4 +1,5 @@
-import { CITIES } from '../constants/cities.js';
+import { CITIES } from '@src/constants/cities.js';
+import styles from './CitySelect.module.css';
 
 export default function CitySelect({ id, value, onChange, required, allowedCities, className }) {
   const options =
@@ -12,10 +13,7 @@ export default function CitySelect({ id, value, onChange, required, allowedCitie
       value={value}
       onChange={onChange}
       required={required}
-      className={
-        className ||
-        'w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white'
-      }
+      className={className || styles.citySelect}
     >
       {options.map((c) => (
         <option key={c} value={c}>

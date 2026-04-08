@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen antialiased bg-slate-50 text-base font-normal leading-normal text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+  }
+}

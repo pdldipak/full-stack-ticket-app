@@ -5,7 +5,7 @@
  * When you add a city, update CITIES and add matching keys under CITY_* below.
  */
 
-import { CITIES } from '../constants/cities.js';
+import { CITIES } from '@src/constants/cities.js';
 
 // --- Identity (hero, ticket detail, browser title) ---
 export const EVENT_ORGANIZER = 'NRNA NCC Sweden';

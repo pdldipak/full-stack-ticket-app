@@ -1,0 +1,4 @@
+/** Block: login */
+.login__heroStack {
+  @apply space-y-5;
+}

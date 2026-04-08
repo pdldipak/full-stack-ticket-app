@@ -1,0 +1,16 @@
+/** Block: theme-toggle */
+.themeToggle__button {
+  @apply inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium leading-none text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700;
+}
+
+.themeToggle__iconSun {
+  @apply h-4 w-4 text-amber-500;
+}
+
+.themeToggle__iconMoon {
+  @apply h-4 w-4 text-slate-600;
+}
+
+.themeToggle__label {
+  @apply hidden sm:inline;
+}

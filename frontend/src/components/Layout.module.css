@@ -1,0 +1,56 @@
+/** Block: layout */
+.layout__root {
+  @apply min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950;
+}
+
+.layout__skipLink {
+  @apply absolute left-[-10000px] top-0 z-[300] rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-lg outline-none ring-2 ring-white ring-offset-2 ring-offset-emerald-700 transition focus:left-4 focus:top-4;
+}
+
+.layout__header {
+  @apply border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80;
+}
+
+.layout__inner {
+  @apply max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3;
+}
+
+.layout__brandCol {
+  @apply min-w-0;
+}
+
+.layout__siteTitle {
+  @apply text-xl font-semibold tracking-tight text-slate-900 dark:text-white block truncate sm:text-2xl;
+}
+
+.layout__compactBranding {
+  @apply mt-1 hidden sm:block max-w-xl;
+}
+
+.layout__nav {
+  @apply flex flex-wrap items-center gap-2;
+}
+
+.layout__navLink {
+  @apply px-3 py-2 rounded-md text-sm font-medium transition;
+}
+
+.layout__navLink_active {
+  @apply bg-emerald-600 text-white;
+}
+
+.layout__navLink_inactive {
+  @apply text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-800;
+}
+
+.layout__toolbar {
+  @apply flex flex-wrap items-center gap-3 text-sm font-medium leading-normal text-slate-600 dark:text-slate-400;
+}
+
+.layout__logout {
+  @apply text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300;
+}
+
+.layout__main {
+  @apply flex-1 max-w-6xl w-full mx-auto px-4 py-8;
+}
