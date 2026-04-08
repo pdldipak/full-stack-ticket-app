@@ -1,4 +1,3 @@
-Ini, TOML
 [build]
   # Tell Netlify to go into the frontend folder to run the build
   base = "frontend"
