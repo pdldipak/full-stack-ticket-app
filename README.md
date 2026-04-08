@@ -35,6 +35,9 @@ Sellers are configured via `backend/.env`:
 ```bash
 cp docker-compose.env.example .env
 docker compose up --build
+## if still old build
+docker compose build --no-cache web api
+docker compose up -d --force-recreate web api
 ```
 
 Open `http://localhost` (or `http://localhost:WEB_PORT` if you changed `WEB_PORT`).

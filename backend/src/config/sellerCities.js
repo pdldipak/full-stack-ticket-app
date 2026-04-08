@@ -1,24 +1,26 @@
+import { ALLOWED_CITIES } from './cities.js';
+
 /**
- * Which seller accounts may create/edit tickets for which cities.
- * Each value is an array — list one city or several, e.g. ['Stockholm', 'Gothenburg'].
+ * Per seller: ordered labels shown in the public order dropdown as seller1(Name, City, …).
+ * Program-city access uses only entries that match ALLOWED_CITIES (e.g. Stockholm, Gothenburg).
  */
 export const SELLER_ALLOWED_CITIES = {
-  seller1: ['Stockholm'],
-  seller2: ['Stockholm'],
-  seller3: ['Stockholm'],
-  seller4: ['Stockholm'],
-  seller5: ['Gothenburg'],
-  seller6: ['Gothenburg'],
-  seller7: ['Gothenburg'],
-  seller8: ['Gothenburg'],
-  seller9: ['Stockholm', 'Gothenburg'],
-  seller10: ['Stockholm', 'Gothenburg'],
-  
+  seller1: ['Rajendra', 'Stockholm'],
+  seller2: ['Dipak', 'Stockholm'],
+  seller3: ['Reena', 'Stockholm'],
+  seller4: ['Rajendra', 'Stockholm', 'Gothenburg'],
 };
 
-export function getAllowedCitiesForSeller(username) {
+/** Full list for UI — same order as in SELLER_ALLOWED_CITIES. */
+export function getSellerDisplayParts(username) {
   const u = String(username || '').trim();
-  return SELLER_ALLOWED_CITIES[u] || [];
+  const arr = SELLER_ALLOWED_CITIES[u];
+  return Array.isArray(arr) ? [...arr] : [];
+}
+
+/** Cities this seller may use for tickets (subset of ALLOWED_CITIES). */
+export function getAllowedCitiesForSeller(username) {
+  return getSellerDisplayParts(username).filter((p) => ALLOWED_CITIES.includes(p));
 }
 
 export function sellerMayUseCity(username, city) {

@@ -292,12 +292,15 @@ export default function OrderTickets() {
                 No sellers — set SELLER_USERNAMES and SELLER_PASSWORDS in backend/.env and restart the API
               </option>
             ) : (
-              sellers.map((s) => (
-                <option key={s.username} value={s.username}>
-                  {s.username}
-                  {s.allowedCities?.length ? ` (${s.allowedCities.join(', ')})` : ''}
-                </option>
-              ))
+              sellers.map((s) => {
+                const parts = s.displayParts?.length ? s.displayParts : s.allowedCities || [];
+                const label = parts.length ? `${s.username}(${parts.join(', ')})` : s.username;
+                return (
+                  <option key={s.username} value={s.username}>
+                    {label}
+                  </option>
+                );
+              })
             )}
           </select>
         </div>

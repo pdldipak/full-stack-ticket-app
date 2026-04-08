@@ -5,7 +5,10 @@ import {
   findSellerByUsername,
   listSellerUsernames,
 } from '../config/sellers.js';
-import { getAllowedCitiesForSeller } from '../config/sellerCities.js';
+import {
+  getAllowedCitiesForSeller,
+  getSellerDisplayParts,
+} from '../config/sellerCities.js';
 import * as ticketModel from '../models/ticketModel.js';
 import { generateQrDataUrl } from '../services/qrService.js';
 import { parseAttendanceFromBody } from '../utils/attendance.js';
@@ -76,6 +79,7 @@ export async function getPublicSellers(req, res) {
   const sellers = usernames.map((username) => ({
     username,
     allowedCities: getAllowedCitiesForSeller(username),
+    displayParts: getSellerDisplayParts(username),
   }));
   return res.json({ sellers });
 }
