@@ -6,6 +6,29 @@
   # The folder Vite creates after building
   publish = "dist"
 
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/auth/*"
+  to = "/.netlify/functions/api/auth/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/tickets/*"
+  to = "/.netlify/functions/api/tickets/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/public/*"
+  to = "/.netlify/functions/api/public/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/health"
+  to = "/.netlify/functions/api/health"
+  status = 200
+
 [[redirects]]
   # This fixes the "404 on refresh" issue for React Router
   from = "/*"
