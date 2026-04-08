@@ -1,0 +1,17 @@
+Ini, TOML
+[build]
+  # Tell Netlify to go into the frontend folder to run the build
+  base = "frontend"
+  # The command to create the production files
+  command = "npm run build"
+  # The folder Vite creates after building
+  publish = "dist"
+
+[[redirects]]
+  # This fixes the "404 on refresh" issue for React Router
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "20"
