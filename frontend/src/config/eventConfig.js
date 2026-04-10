@@ -37,7 +37,7 @@ export const CITY_EVENT_TIMES = {
 /** Use the literal "TBA" if the venue is not announced yet. */
 export const CITY_VENUES = {
   Stockholm: 'Åstra Folkets Hus',
-  Gothenburg: 'TBA',
+  Gothenburg: 'House of Possibilitias in Gothenburg',
 };
 
 // --- Public order page (`/order`) ---
