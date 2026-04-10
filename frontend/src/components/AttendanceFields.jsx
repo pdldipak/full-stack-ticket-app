@@ -104,7 +104,7 @@ export default function AttendanceFields({
           </p>
           <p className={styles.attendanceFields__summary}>
           NRNA sweden Swish: <b>123-012 84 05</b> <br />
-          Don’t forget to take a screenshot.
+         <span className={styles.attendanceFields__swishHint}> Don’t forget to take a screenshot.</span>
       </p>
         </>
       )}
