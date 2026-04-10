@@ -1,8 +1,8 @@
 /**
  * Public web order page — amounts in SEK (must match frontend `constants/orderPricing.js`).
  */
-export const ORDER_ADULT_PRICE_SEK = 200;
-export const ORDER_STUDENT_PRICE_SEK = 125;
+export const ORDER_ADULT_PRICE_SEK = 250;
+export const ORDER_STUDENT_PRICE_SEK = 250;
 export const ORDER_CHILD_PRICE_SEK = 0;
 
 export function computePublicOrderTotalSek(countAdults, countStudent, countChild) {
