@@ -46,6 +46,6 @@
 .attendanceFields__pricing-hint {
   @apply text-sm leading-snug text-slate-500 dark:text-slate-400;
 }
-.attendanceFields__swish-hint {
+.attendanceFields__swisHint{
   @apply text-sm leading-snug text-red-500 dark:text-red-400;
 }
