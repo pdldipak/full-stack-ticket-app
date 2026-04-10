@@ -106,7 +106,7 @@ export default function AttendanceFields({
             NRNA sweden Swish: <b>123-012 84 05</b>
             <br />
             <span className={styles.attendanceFields__swishHint}>
-              Don’t forget to take a screenshot.
+              Don’t forget to take a screenshot swish payment to verify your order.
             </span>
           </p>
         </>
