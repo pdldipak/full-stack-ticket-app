@@ -1,7 +1,7 @@
 /**
  * BEM block: attendance-fields
  * Elements: __legend, __legend-required, __hint, __grid, __field, __label, __input,
- *           __summary, __summary-strong, __pricing-line, __pricing-hint
+ *           __summary, __summary-strong, __pricing-line, __pricing-hint, __swish-hint
  */
 .attendanceFields {
   @apply rounded-lg border border-slate-200 bg-slate-50/80 p-4 space-y-3 dark:border-slate-700 dark:bg-slate-800/40;
@@ -46,6 +46,8 @@
 .attendanceFields__pricing-hint {
   @apply text-sm leading-snug text-slate-500 dark:text-slate-400;
 }
-.attendanceFields__swisHint{
-  @apply text-sm leading-snug text-red-500 dark:text-red-400;
+
+/* kebab-case matches other elements; ! ensures color wins over .attendanceFields__summary on <p> */
+.attendanceFields__swish-hint {
+  @apply text-sm leading-snug font-medium !text-red-600 dark:!text-red-400;
 }

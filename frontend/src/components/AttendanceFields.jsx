@@ -103,9 +103,12 @@ export default function AttendanceFields({
               : `${ORDER_CHILD_PRICE_SEK} kr per child`}
           </p>
           <p className={styles.attendanceFields__summary}>
-          NRNA sweden Swish: <b>123-012 84 05</b> <br />
-         <span className={styles.attendanceFields__swishHint}> Don’t forget to take a screenshot.</span>
-      </p>
+            NRNA sweden Swish: <b>123-012 84 05</b>
+            <br />
+            <span className={styles.attendanceFields__swishHint}>
+              Don’t forget to take a screenshot.
+            </span>
+          </p>
         </>
       )}
     </fieldset>
