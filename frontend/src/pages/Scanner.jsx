@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Html5Qrcode } from 'html5-qrcode';
 import api from '@src/api/client.js';
 import { formatSek } from '@src/utils/formatCurrency.js';
-import { getTicketCodeExample } from '@src/config/eventConfig.js';
+import { getTicketCodePrefix } from '@src/config/eventConfig.js';
 import styles from '@src/pages/Scanner.module.css';
 
 const SCANNER_ID = 'scanner-viewport';
@@ -159,7 +159,8 @@ export default function Scanner() {
   const scannerRef = useRef(null);
   const [running, setRunning] = useState(false);
   const [message, setMessage] = useState(null);
-  const [manualCode, setManualCode] = useState('');
+  const ticketPrefix = getTicketCodePrefix();
+  const [manualSuffix, setManualSuffix] = useState('');
   const [checking, setChecking] = useState(false);
 
   const stopScanner = async () => {
@@ -259,9 +260,22 @@ export default function Scanner() {
     };
   }, []);
 
+  const handleManualSuffixChange = (e) => {
+    let v = e.target.value;
+    const p = ticketPrefix.toUpperCase();
+    const u = v.trimStart().toUpperCase();
+    if (u.startsWith(p)) {
+      v = v.trimStart().slice(ticketPrefix.length);
+    }
+    setManualSuffix(v);
+  };
+
   const handleManual = (e) => {
     e.preventDefault();
-    const code = normalizeScannedText(manualCode);
+    const suffix = manualSuffix.trim();
+    if (!suffix) return;
+    const full = `${ticketPrefix}${suffix}`;
+    const code = normalizeScannedText(full);
     if (code) verifyCode(code);
   };
 
@@ -304,15 +318,23 @@ export default function Scanner() {
       <form onSubmit={handleManual} className={styles.scanner__manualForm}>
         <label className={styles.scanner__manualLabel}>Manual ticket code</label>
         <div className={styles.scanner__manualRow}>
+          <span className={styles.scanner__manualPrefix} aria-hidden="true">
+            {ticketPrefix}
+          </span>
           <input
-            value={manualCode}
-            onChange={(e) => setManualCode(e.target.value)}
-            placeholder={getTicketCodeExample()}
+            value={manualSuffix}
+            onChange={handleManualSuffixChange}
+            placeholder="0001"
+            inputMode="text"
+            autoCapitalize="characters"
+            autoCorrect="off"
+            spellCheck={false}
             className={styles.scanner__manualInput}
+            aria-label="Ticket number after prefix"
           />
           <button
             type="submit"
-            disabled={checking || !manualCode.trim()}
+            disabled={checking || !manualSuffix.trim()}
             className={styles.scanner__manualSubmit}
           >
             Verify

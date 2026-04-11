@@ -67,9 +67,14 @@ export function getSiteHeaderTitle() {
   return `${SITE_PRODUCT_NAME} · ${EVENT_ORGANIZER}`;
 }
 
+/** Prefix for manual entry: user types only the part after this (e.g. 0001). */
+export function getTicketCodePrefix() {
+  return `TKT-${TICKET_CODE_EVENT_SLUG}-`;
+}
+
 /** Example ticket code for scanner manual entry (sync with server TICKET_CODE_EVENT_SLUG). */
 export function getTicketCodeExample() {
-  return `TKT-${TICKET_CODE_EVENT_SLUG}-0001`;
+  return `${getTicketCodePrefix()}0001`;
 }
 
 export function getEventDateForCity(city) {
