@@ -49,5 +49,5 @@
 
 
 .attendanceFields__swishHint{
-  @apply text-sm text-slate-700 dark:text-slate-300;
+  @apply font-semibold text-sm text-green-600 dark:text-green-400;
 }
