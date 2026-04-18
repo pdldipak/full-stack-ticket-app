@@ -23,6 +23,7 @@ import {
 } from '@src/config/eventConfig.js';
 import { PAID_TO_OPTIONS, PAID_TO_SELLER } from '@src/constants/payment.js';
 import { getApiErrorMessage } from '@src/utils/apiError.js';
+import { isValidSwedishMobile } from '@src/utils/swedishMobile.js';
 import tf from '@src/styles/ticketForm.module.css';
 import styles from '@src/pages/OrderTickets.module.css';
 
@@ -97,6 +98,12 @@ export default function OrderTickets() {
     if (!phoneContactConsent) {
       setError(
         'Please confirm that committee members of this program may contact you using the phone number you provided.'
+      );
+      return;
+    }
+    if (!isValidSwedishMobile(phone)) {
+      setError(
+        'Enter a valid Swedish mobile number (e.g. 0701234567 or +46701234567). Only digits and an optional + or 00 country prefix are accepted.'
       );
       return;
     }
@@ -216,10 +223,12 @@ export default function OrderTickets() {
             id="order-phone"
             type="tel"
             required
+            inputMode="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             autoComplete="tel"
             placeholder="+46 70 123 45 67"
+            title="Swedish mobile: 10 digits starting with 07, or +46 followed by 9 digits (7 and 8 more digits)."
             className={tf.ticketForm__input}
           />
         </div>
